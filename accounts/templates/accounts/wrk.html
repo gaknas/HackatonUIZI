@@ -1,17 +1,16 @@
-<!-- templates/accounts/login.html -->
 <!DOCTYPE html>
 <html>
 
 <head>
     <title>HTML Login Form</title>
     {% load static %}
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <link rel="icon" href="{% static 'favicon.ico' %}">
+    <link rel="stylesheet" href="{% static 'accounts/style.css' %}">
+    <link rel="icon" href="{% static 'images/favicon.ico' %}">
 </head>
 
 <body>
     <div class="main">
-        <img src="{% static 'images/logo_horisontal.png' %}" />
+        <img src="{% static 'accounts/images/logo_horisontal.png' %}" />
         <h3>Авторизация</h3>
         <form action="">
             <label for="username">
@@ -33,7 +32,7 @@
             <div class="wrap">
                 <button type="submit"
                         onclick="solve()">
-                    Submit
+                    Подтвердить
                 </button>
             </div>
         </form>
