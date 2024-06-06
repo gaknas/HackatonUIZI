@@ -1,8 +1,13 @@
+@font-face {
+    font-family: 'Myriad Pro';
+    src: url('../fonts/MyriadPro-Light.otf');
+}
+
 body {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: sans-serif;
+    font-family: 'Myriad Pro';
     line-height: 1.5;
     min-height: 100vh;
     background: #f3f3f3;
