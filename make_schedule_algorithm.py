@@ -1,4 +1,5 @@
 import json
+import openpyxl
 
 
 def create_one_day_list(all_s_l, num_d):
@@ -40,10 +41,30 @@ def make_time(dc_di):
     return end_time, all_time
 
 
+def write_excel(doc_l, shed, path_input, path_output):
+    alph = ['G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U',
+            'W']
+    doc_l_tab = []
+    f_t = 3
+    for i in range(len(doc_l)):
+        doc_l_tab.append([f_t + n for n in range(4)])
+        f_t += 4
+    workbook = openpyxl.load_workbook(path_input)
+    worksheet = workbook.active
+    for data in shed:
+        x = alph[data['День'] - 1]
+        y = doc_l_tab[data['ФИО'][1] - 1]
+        worksheet[x + str(y[0])] = str(data['Рабочее время']['с'])
+        worksheet[x + str(y[1])] = str(data['Рабочее время']['по'])
+        worksheet[x + str(y[2])] = str(data['Рабочее время']['перерыв'])
+        worksheet[x + str(y[3])] = str(data['Рабочее время']['отраб.']) + " (" + str(data['Исследование']) + ")"
+    workbook.save(path_output)
+
+
 def find_one_doc(day_list, doc_l, doc_lst, doc_i, schedule, search, search_index, all_search_lst,
                  one_doc_sh_l, one_day_search_lst, doc_lst_iter, count_doc, day):
     day_list[doc_l.index(doc_lst[doc_i])] -= 1
-    schedule.append({'День': day + 1, 'ФИО': doc_lst[doc_i].get("ФИО"), 'Исследование': search + search_index,
+    schedule.append({'День': day + 1, 'ФИО': [doc_lst[doc_i].get("ФИО"), int((doc_lst[doc_i].get("ФИО")).split('ч')[1])], 'Исследование': search + search_index,
                      'Рабочее время': {'с': '8:00', 'по': make_time(doc_lst[doc_i])[0], 'перерыв': 30,
                                        'отраб.': make_time(doc_lst[doc_i])[1]}})
     all_search_lst[search + search_index] -= one_doc_sh_l.get(search + search_index) * doc_lst[doc_i].get("ставка")
@@ -84,7 +105,7 @@ def make_schedule_algorithm(all_search_l, doc_l, one_doc_sh_l, num_day, worked_d
                                          doc_lst_iter, count_doc, day))
                         break
         cd.append(f"День {day + 1} занято {count_doc} врачей")
-    return schedule, all_search_lst, cd
+    return sorted(schedule, key=lambda x: x["ФИО"][1]), all_search_lst, cd
 
 
 all_search_list = {'Денситометрия': 1436, 'КТ': 4631, 'КТ1': 532, 'КТ2': 793, 'ММГ': 13190, 'МРТ': 2423, 'МРТ1': 943,
@@ -93,6 +114,8 @@ one_doc_search_list = {'Денситометрия': 140, 'КТ': 26, 'КТ1': 1
                        'МРТ2': 10, 'РГ': 82, 'ФЛГ': 300}
 doc_list = read_doc_list_file('doc_list.txt')
 answer = make_schedule_algorithm(all_search_list, doc_list, one_doc_search_list, 7, 5)
+write_excel(doc_list, answer[0], 'template_doc_excel.xlsx', 'doc_excel.xlsx')
+
 for ans in answer[0]:
     print(ans)
 print(answer[1])
