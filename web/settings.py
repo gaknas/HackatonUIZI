@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-t(d0umdks+re4+otm4)&++(0q13qn8nru@8kgy^n#hwtk00l2k
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -77,10 +77,10 @@ WSGI_APPLICATION = 'web.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'ldata',
-        'USER': 'login',
-        'PASSWORD': 'login',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'auth_db',
+        'USER': 'admin',
+        'PASSWORD': 'admin',
         'HOST': 'localhost',
         'PORT': '5432',
     }
@@ -125,6 +125,7 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
