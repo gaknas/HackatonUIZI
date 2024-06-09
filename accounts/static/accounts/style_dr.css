@@ -26,7 +26,7 @@ body {
   
   .timetable-grid {
     display: grid;
-    grid-template-columns: auto repeat(3, 1fr); /* Adjust the number of days */
+    grid-template-columns: auto repeat(4, 1fr); /* Adjust the number of days */
     grid-gap: 10px;
   }
   
