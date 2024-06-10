@@ -121,15 +121,21 @@ month_search_list = [{'Денситометрия': 1970, 'КТ': 4437, 'КТ1':
 one_doc_search_list = {'Денситометрия': 140, 'КТ': 26, 'КТ1': 16, 'КТ2': 11, 'ММГ': 82, 'МРТ': 20, 'МРТ1': 15,
                        'МРТ2': 10, 'РГ': 82, 'ФЛГ': 300}
 doc_list = read_doc_list_file('doc_list.txt')
-answer = [make_schedule_algorithm(m_s_l, doc_list, one_doc_search_list, 7) for m_s_l in month_search_list]
+answer_m = [make_schedule_algorithm(m_s_l, doc_list, one_doc_search_list, 7) for m_s_l in month_search_list]
 answer_month = []
-for i in range(len(answer)):
-    for j in range(len(answer[i][0])):
-        answer[i][0][j]['День'] += 7 * i
-for ans in answer:
+for i in range(len(answer_m)):
+    for j in range(len(answer_m[i][0])):
+        answer_m[i][0][j]['День'] += 7 * i
+for ans in answer_m:
     for a in ans[0]:
         answer_month.append(a)
 write_excel(doc_list, answer_month, 'template_doc_excel_for_month.xlsx', 'doc_excel_for_month.xlsx')
-for answ in answer:
+for answ in answer_m:
+    for an in answ[0]:
+        print(an)
+for answ in answer_m:
     print(answ[1])
+for answ in answer_m:
+    for an in answ[2]:
+        print(an)
 
