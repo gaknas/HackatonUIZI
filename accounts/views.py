@@ -20,7 +20,7 @@ def acc_login_view(request):
 
 @login_required
 def acc_view(request):
-    return render(request, 'accounts/dr.html')
+    return render(request, 'accounts/hr.html')
 
 @login_required
 def acc_logout(request):
