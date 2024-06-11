@@ -8,10 +8,10 @@ class Employee(models.Model):
         {3, 'Руководитель'},
     ]
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
-    patronymic = models.CharField(max_length=40, default='Иванович')
+    patronymic = models.CharField(max_length=40, default='')
     role = models.PositiveSmallIntegerField(choices=SPOT, default=1)
-    primary_skill = models.CharField(max_length=10, default='РГ')
-    secondary_skills = models.CharField(max_length=30, default='КТ')
+    primary_skill = models.CharField(max_length=10, default='')
+    secondary_skills = models.CharField(max_length=30, default='')
     bid = models.DecimalField(max_digits=3, decimal_places=2, default='1.00')
 
     def __str__(self):
