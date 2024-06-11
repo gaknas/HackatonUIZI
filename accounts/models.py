@@ -20,6 +20,9 @@ class Employee(models.Model):
     class Meta:
         verbose_name = 'Сотрудник'
         verbose_name_plural = 'Сотрудники'
+        permissions = (
+            ("can_manage_dr", "Управление врачами"),
+        )
 
 class Shedule(models.Model):
     sys_user = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name = 'shedule', null=True)
