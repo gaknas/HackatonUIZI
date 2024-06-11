@@ -9,4 +9,5 @@ urlpatterns = [
         path('accounts/logout/', views.acc_logout, name = 'logout'),
         path('accounts/dr/<int:user_id>', views.acc_dr_home_view, name = 'dr-cab'),
         path('accounts/hr/<int:user_id>', views.acc_hr_home_view, name = 'hr-cab'),
+        path('accounts/mr/<int:user_id>', views.acc_mr_home_view, name = 'mr-cab'),
 ]

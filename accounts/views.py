@@ -19,6 +19,8 @@ def acc_login_view(request):
                 return redirect('accounts:dr-cab', user_id = employee.user_id)
             if employee.role == 2:
                 return redirect('accounts:hr-cab', user_id = employee.user_id)
+            if employee.role == 3:
+                return redirect('accounts:mr-cab', user_id = employee.user_id)
         else:
             return render(request, 'accounts/login.html', {'error': 'Неверное имя или пароль'})
     return render(request, "accounts/login.html")
@@ -34,8 +36,11 @@ def acc_logout(request):
 
 @login_required
 def acc_dr_home_view(request, user_id):
-    if request.user.pk == user_id and Employee.objects.get(user_id=user_id).role == 1:
-        return render(request, 'accounts/dr.html')
+    if request.user.is_authenticated:
+        if request.user.pk == user_id and Employee.objects.get(user_id=user_id).role == 1:
+            return render(request, 'accounts/dr.html')
+        else:
+            return redirect('/')
     else:
         return redirect('/')
 
@@ -43,5 +48,12 @@ def acc_dr_home_view(request, user_id):
 def acc_hr_home_view(request, user_id):
     if request.user.pk == user_id and Employee.objects.get(user_id=user_id).role == 2:
         return render(request, 'accounts/hr.html')
+    else:
+        return redirect('/')
+
+@login_required
+def acc_mr_home_view(request, user_id):
+    if request.user.pk == user_id and Employee.objects.get(user_id=user_id).role == 3:
+        return render(request, 'accounts/mr.html')
     else:
         return redirect('/')
