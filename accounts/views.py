@@ -34,14 +34,14 @@ def acc_logout(request):
 
 @login_required
 def acc_dr_home_view(request, user_id):
-    if request.user.pk == user_id:
+    if request.user.pk == user_id and Employee.objects.get(user_id=user_id).role == 1:
         return render(request, 'accounts/dr.html')
-    elif request.user is not None:
-        messages.error(request, 'Извините, у Вас нет доступа к запрашиваемой странице')
-        return redirect(request.META.get('HTTP_REFERER', '/'))
     else:
         return redirect('/')
 
 @login_required
 def acc_hr_home_view(request, user_id):
-    return render(request, 'accounts/hr.html')
+    if request.user.pk == user_id and Employee.objects.get(user_id=user_id).role == 2:
+        return render(request, 'accounts/hr.html')
+    else:
+        return redirect('/')
