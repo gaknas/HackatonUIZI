@@ -8,8 +8,8 @@ def transform_modalities(modalities):
     return []
 
 
-file_path = 'table_template_doc_list.xlsx'
-df = pd.read_excel(file_path, header=1)
+file_path = 'doc_excel_start_list.xlsx'
+df = pd.read_excel(file_path, usecols=[0, 1, 2, 3], header=1)
 df = df.dropna(how='all')
 df.columns = ['ФИО', 'модальность', 'дополнительные модальности', 'ставка']
 df = df.fillna({'ФИО': '', 'модальность': '', 'дополнительные модальности': '', 'ставка': 0})
