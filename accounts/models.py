@@ -20,9 +20,6 @@ class Employee(models.Model):
     class Meta:
         verbose_name = 'Сотрудник'
         verbose_name_plural = 'Сотрудники'
-        permissions = (
-            ("can_manage_dr", "Управление врачами"),
-        )
 
 class Shedule(models.Model):
     sys_user = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name = 'shedule', null=True)
@@ -40,4 +37,18 @@ class Shedule(models.Model):
         verbose_name = 'Расписание'
         verbose_name_plural = 'Расписания'
 
+class ExcelModel(models.Model):
+    year = models.IntegerField()
+    week_num = models.IntegerField()
+    dens = models.IntegerField()
+    kt = models.IntegerField()
+    kt1 = models.IntegerField()
+    kt2 = models.IntegerField()
+    mmg = models.IntegerField()
+    mrt = models.IntegerField()
+    mrt1 = models.IntegerField()
+    mrt2 = models.IntegerField()
+    rg = models.IntegerField()
+    flu = models.IntegerField()
 
+    
