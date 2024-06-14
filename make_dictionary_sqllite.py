@@ -1,9 +1,12 @@
+from django.contrib.auth.hashers import make_password
+import time
+import datetime
 import pandas as pd
 import sqlite3
 import sys 
+import os
 import random
 import string
-
 def transform_modalities(modalities):
     if modalities:
         return [mod.strip() for mod in modalities.split(',')]
@@ -19,10 +22,9 @@ def gen_seq_total(file_path, length, status):
             file.write(f"Login: {sequence}\t")
         else:
             file.write(f"Pass: {sequence}\n")
-            file.write("\n")
     return sequence
     
-
+os.environ["DJANGO_SETTINGS_MODULE"] = "web.settings"
 file_path = sys.argv[1]
 login_db_path = sys.argv[2]
 df = pd.read_excel(file_path, usecols=[0, 1, 2, 3], header=1)
@@ -47,18 +49,23 @@ c = conn.cursor()
 
 c.execute('DELETE FROM accounts_employee WHERE role=1')
 c.execute('DELETE FROM auth_user WHERE last_name=1')
-
+start_time=time.time()
 for _, row in df.iterrows():
     c.execute('''
-    INSERT INTO auth_user (username, password, first_name, last_name, is_superuser, email)
-    VALUES (?, ?, ?, ?, ?, ?)
-    ''', (gen_seq_total(login_db_path, 12, 1), gen_seq_total(login_db_path, 16, 0), row['ФИО'], 1, 0, ''))
-
-for _, row in df.iterrows():
+    INSERT INTO auth_user (username, password, first_name, last_name, is_superuser, email, is_staff, is_active, date_joined)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    ''', (gen_seq_total(login_db_path, 12, 1), make_password(gen_seq_total(login_db_path, 16, 0)), row['ФИО'], 1, 0, '', 0, 1, datetime.datetime.now()))
+    print('*')
+    uid = c.execute('''
+    SELECT * FROM auth_user ORDER BY date_joined DESC LIMIT 1
+    ''')
     c.execute('''
-    INSERT INTO accounts_employee (primary_skill, secondary_skills, bid)
-    VALUES (?, ?, ?)
-    ''', (row['Модальность'], ','.join(row['Дополнительные модальности']), row['Ставка']))
+    INSERT INTO accounts_employee (primary_skill, secondary_skills, bid, role, user_id)
+    VALUES (?, ?, ?, ?, ?)
+    ''', (row['Модальность'], ','.join(row['Дополнительные модальности']), row['Ставка'], 1, uid.fetchone()[0] ))
+    #print(uid.fetchone()[0])
+end_time=time.time()
+print(end_time-start_time)
 
 conn.commit()
 conn.close()

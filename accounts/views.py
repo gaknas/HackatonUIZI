@@ -98,6 +98,6 @@ def excel_import_count(request):
         file_path = default_storage.save(excel_file.name, excel_file)
         out = subprocess.run(['python', 'PREDICT.py', file_path], stderr = subprocess.DEVNULL)
         os.remove(file_path)
-        return redirect('accounts:mr-cab', user_id=uid)
+        return redirect('accounts:mr-cab-pred', user_id=uid)
     else:
         return redirect('accounts:login')
