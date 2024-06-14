@@ -210,13 +210,13 @@
 		<form action="{% url "accounts:excel_import_count" %}" method="post" enctype="multipart/form-data">
             	{% csrf_token %}
             	<input type="file"
-                   title="Upload excel file"
+                   title="Выберите файл Excel"
                    name="excel_file"
                    style="border: 1px solid black; padding: 5px;"
                    required="required">
             	<p>
             	<input type="submit"
-                   value="Upload"
+                   value="Выгрузить"
                    style="border: 1px solid green; padding:5px; border-radius: 2px; cursor: pointer;">
         	</form>
 	      </body>
