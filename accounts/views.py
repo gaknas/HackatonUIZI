@@ -101,3 +101,15 @@ def excel_import_count(request):
         return redirect('accounts:mr-cab-pred', user_id=uid)
     else:
         return redirect('accounts:login')
+
+@login_required
+def excel_import_employee(request):
+    if "POST" == request.method and Employee.objects.get(user=User.objects.get(username=request.user)).role == 3:
+        uid = Employee.objects.get(user=User.objects.get(username=request.user)).user_id
+        excel_file = request.FILES["excel_file_emp"]
+        file_path = default_storage.save(excel_file.name, excel_file)
+        out = subprocess.run(['python', 'LOAD_EMP.py', file_path, 'login.txt'], stderr = subprocess.DEVNULL)
+        os.remove(file_path)
+        return redirect('accounts:mr-cab-hr', user_id=uid)
+    else:
+        return redirect('accounts:login')

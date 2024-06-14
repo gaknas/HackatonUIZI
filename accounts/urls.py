@@ -13,5 +13,6 @@ urlpatterns = [
         path('accounts/mr/<int:user_id>/hr', views.acc_mr_hr_view, name = 'mr-cab-hr'),
         path('accounts/mr/<int:user_id>/not', views.acc_mr_not_view, name = 'mr-cab-not'),
         path('accounts/mr/<int:user_id>/pred', views.acc_mr_pred_view, name = 'mr-cab-pred'),
-        path('accounts/excel', views.excel_import_count, name='excel_import_count'),
+        path('accounts/excel_count', views.excel_import_count, name='excel_import_count'),
+        path('accounts/excel_emp', views.excel_import_employee, name = 'excel_import_employee'),
 ]
