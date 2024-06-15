@@ -12,6 +12,32 @@ class Employee(models.Model):
     primary_skill = models.CharField(max_length=128, default='')
     secondary_skills = models.CharField(max_length=128, default='')
     bid = models.DecimalField(max_digits=3, decimal_places=2, default='1.00')
+    shed = models.TextField(default='')
+    month_shed = models.TextField(default='')
+
+    def get_shed_as_list(self, shed_id):
+        if not shed_id:
+            return [int(num) for num in self.shed.split(',')]
+        else:
+            return [int(num) for num in self.month_shed.split(',')]
+
+    def add_list_to_shed(self, field):
+        field_list = self.get_shed_as_list()
+        field_list.append(field)
+        if not shed_id:
+            self.shed = ','.join(str(num) for num in field_list)
+        else:
+            self.month_shed = ','.join(str(num) for num in field_list)
+        
+    def set_num_at_index(self, index, value, shed_id):
+        field_list = self.get_shed_at_list(shed_id)
+        if index >= 0 and index <= len(field_list):
+            field_list[index] = value
+        if not shed_id:
+            self.shed = ','.join(str(num) for num in field_list)
+        else:
+            self.month_shed = ','.join(str(num) for num in field_list)
+
 
     def __str__(self):
         return self.user.last_name + " " + self.user.first_name + " # " + self.user.username

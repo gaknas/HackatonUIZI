@@ -153,3 +153,9 @@ def add_dr_submit(request):
             user.save()
             return redirect('accounts:mr-cab-hr', user_id=uid) 
     return redirect('accounts:login')
+
+@login_required
+def del_notification(request, not_id):
+    notif = Notification.objects.get(id=not_id)
+    notification.delete()
+    return redirect('accounts:mr-cab-not', uid = Employee.objects.get(user=User.objects.get(username=request.user)).user_id)

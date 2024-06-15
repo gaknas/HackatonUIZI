@@ -53,8 +53,12 @@
         <div class="list-group-item list-group-item-action">
             <div class="d-flex w-100 justify-content-between">
                 <h5 class="mb-1">{{ notification.name_emp }}</h5> <!-- Выводим значение атрибута name_emp -->
-                <a href="/"><img src="{% static 'accounts/images/delete.png' %}"></a>
-            </div>
+		{% if notification.type_not %}
+            	{% else %}
+			<a href="{% url 'accounts:del_notification' notification.id %}"><img src="{% static 'accounts/images/accept.png' %}"></a>
+			<a href="{% url 'accounts:del_notification' notification.id %}"><img src="{% static 'accounts/images/delete.png' %}"></a>
+		{% endif %}
+	    </div>
             <p class="mb-1">{{ notification.text_not }}</p> <!-- Выводим значение атрибута text_not -->
         </div>
     {% endfor %}
