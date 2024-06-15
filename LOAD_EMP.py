@@ -35,7 +35,7 @@ df['Дополнительные модальности'] = df['Дополнит
 conn = sqlite3.connect('db.sqlite3')
 c = conn.cursor()
 
-c.execute('DELETE FROM accounts_employee WHERE role=1')
+#c.execute('DELETE FROM accounts_employee WHERE role=1')
 c.execute('DELETE FROM auth_user WHERE last_name=1')
 os.remove('login.txt')
 open("login.txt", "w")

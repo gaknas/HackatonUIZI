@@ -65,14 +65,17 @@ def acc_hr_home_view(request, user_id):
 @login_required
 def acc_mr_month_view(request, user_id):
     if request.user.pk == user_id and Employee.objects.get(user_id=user_id).role == 3:
-        return render(request, 'accounts/mr_month.html', {'uid': user_id})
+        notifications = Notification.objects.all()
+        return render(request, 'accounts/mr_month.html', {'uid': user_id, 'notifications':notifications})
     else:
         return redirect('/')
 
 @login_required
 def acc_mr_hr_view(request, user_id):
     if request.user.pk == user_id and Employee.objects.get(user_id=user_id).role == 3:
-        return render(request, 'accounts/mr_hr.html', {'uid': user_id})
+        notifications = Notification.objects.all()
+        employees = Employee.objects.all()
+        return render(request, 'accounts/mr_hr.html', {'uid': user_id, 'notifications':notifications, 'employees':employees})
     else:
         return redirect('/')
 
@@ -80,7 +83,6 @@ def acc_mr_hr_view(request, user_id):
 def acc_mr_not_view(request, user_id):
     if request.user.pk == user_id and Employee.objects.get(user_id=user_id).role == 3:
         notifications = Notification.objects.all()
-
         return render(request, 'accounts/mr_not.html', {'uid': user_id, 'notifications':notifications})
     else:
         return redirect('/')
@@ -88,7 +90,8 @@ def acc_mr_not_view(request, user_id):
 @login_required
 def acc_mr_pred_view(request, user_id):
     if request.user.pk == user_id and Employee.objects.get(user_id=user_id).role == 3:
-        return render(request, 'accounts/mr_pred.html', {'uid': user_id})
+        notifications = Notification.objects.all()
+        return render(request, 'accounts/mr_pred.html', {'uid': user_id, 'notifications':notifications})
     else:
         return redirect('/')
 
@@ -139,7 +142,7 @@ def add_dr_submit(request):
         secondary_skills = request.POST.getlist('secondary_skills')
         if Employee.objects.get(user_id=uid).role == 2:
             if role == '1':
-                user = Employee.objects.create(user = User.objects.create_user(username=username, first_name=fio, password=password, is_active=0), role=role, bid=bid,primary_skill=primary_skill, secondary_skills=secondary_skills)
+                user = Employee.objects.create(user = User.objects.create_user(username=username, first_name=fio, last_name=1, password=password, is_active=0), role=role, bid=bid,primary_skill=primary_skill, secondary_skills=secondary_skills)
                 user.save()
             if role == '2':
                 user = Employee.objects.create(user = User.objects.create_user(username=username, first_name=fio, password=password, is_active=0), role=role, bid=bid,primary_skill=primary_skill, secondary_skills=secondary_skills)
@@ -163,3 +166,20 @@ def del_dr_not(request, notif_id):
     user.delete()
     notif.delete()
     return redirect('accounts:mr-cab-not', user_id = Employee.objects.get(user=User.objects.get(username=request.user)).user_id)
+
+@login_required
+def add_dr_not(request, notif_id):
+    notif = Notification.objects.get(id=notif_id)
+    user = User.objects.get(id=notif.user_id)
+    user.is_active = 1
+    user.save()
+    notif.delete()
+    return redirect('accounts:mr-cab-not', user_id = Employee.objects.get(user=User.objects.get(username=request.user)).user_id)
+
+@login_required
+def remove_emp(request, user_id):
+    emp = Employee.objects.get(user_id=user_id)
+    usr = User.objects.get(id=user_id)
+    emp.delete()
+    usr.delete()
+    return rediredt('accounts:mr-cat-hr', user_id=User.objects.get(id=request.user.pk))

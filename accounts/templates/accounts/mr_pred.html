@@ -34,9 +34,15 @@
               <li class="nav-item">
 		      <a class="nav-link" href="{% url 'accounts:mr-cab-hr' user_id=uid %}">Управление кадрами</a>
               </li>
+	      {% if notifications %}
+	      <li class="nav-item">
+			<a class="nav-link" href="{% url 'accounts:mr-cab-not' user_id=uid %}" style="color: red; font-weight: bold;">Уведомления</a>
+	      </li>
+	      {% else %}
               <li class="nav-item">
-		      <a class="nav-link" href="{% url 'accounts:mr-cab-not' user_id=uid %}">Уведомления от врачей</a>
+		      <a class="nav-link" href="{% url 'accounts:mr-cab-not' user_id=uid %}">Уведомления</a>
               </li>
+	      {% endif %}
               <li class="nav-item">
 		      <a class="nav-link"  href="{% url 'accounts:mr-cab-pred' user_id=uid %}">Прогнозирование количества исследований</a>
               </li>

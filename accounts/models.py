@@ -7,14 +7,14 @@ class Employee(models.Model):
         {2, 'Менеджер кадров'},
         {3, 'Руководитель'},
     ]
-    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
+    user = models.OneToOneField(User, primary_key=True, related_name='user_id', on_delete=models.CASCADE)
     role = models.PositiveSmallIntegerField(choices=SPOT, default=1)
     primary_skill = models.CharField(max_length=128, default='')
     secondary_skills = models.CharField(max_length=128, default='')
     bid = models.DecimalField(max_digits=3, decimal_places=2, default='1.00')
-    shed = models.TextField(default='',blank=True, null=True)
-    month_shed = models.TextField(default='',null=True)
-
+    shed = models.TextField(default='', null=True)
+    month_shed = models.TextField(default='', null=True)
+    time_per_week = models.TextField(default='', null=True)
     def get_shed_as_list(self, shed_id):
         if not shed_id:
             if len(self.shed) != 0:
@@ -26,6 +26,10 @@ class Employee(models.Model):
                 return [int(num) for num in self.month_shed.split(',')]
             else:
                 return []
+
+    def set_time(self, field):
+        self.time_per_week = []
+
 
     def add_list_to_shed(self, field, shed_id):
         if not shed_id:

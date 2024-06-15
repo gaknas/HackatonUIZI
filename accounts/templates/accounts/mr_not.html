@@ -10,14 +10,6 @@
 </head>
 
 <body>
-      <!--<nav class="navbar">
-            <img style="margin: 10px" src="./images/logo_center.png" width="120" height="120" alt="logo">
-            
-            <div class="auth-data" style="text-align: center;">
-              <p style="margin-right: 10px;">Вы авторизированы как HR</p>
-              <a href="">Logout</a>
-            </div>
-      </nav> -->   
       <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
           <a class="navbar-brand" href="#">
@@ -34,9 +26,15 @@
               <li class="nav-item">
 		      <a class="nav-link" href="{% url 'accounts:mr-cab-hr' user_id=uid %}">Управление кадрами</a>
               </li>
+	      {% if notifications %}
+	      <li class="nav-item">
+			<a class="nav-link" href="{% url 'accounts:mr-cab-not' user_id=uid %}" style="color: red; font-weight: bold;">Уведомления</a>
+	      </li>
+	      {% else %}
               <li class="nav-item">
-		      <a class="nav-link" href="{% url 'accounts:mr-cab-not' user_id=uid %}">Уведомления от врачей</a>
+		      <a class="nav-link" href="{% url 'accounts:mr-cab-not' user_id=uid %}">Уведомления</a>
               </li>
+	      {% endif %}
               <li class="nav-item">
 		      <a class="nav-link"  href="{% url 'accounts:mr-cab-pred' user_id=uid %}">Прогнозирование количества исследований</a>
               </li>
@@ -54,19 +52,16 @@
             <div class="d-flex w-100 justify-content-between">
                 <h5 class="mb-1">{{ notification.name_emp }}</h5> <!-- Выводим значение атрибута name_emp -->
 		{% if notification.type_not %}
+			
             	{% else %}
 		<div>
-            <a href="{% url 'accounts:del_dr_not' notification.id %}">
+            <a href="{% url 'accounts:add_dr_not' notification.id %}">
                 <img src="{% static 'accounts/images/accept.png' %}" style="display: inline-block;">
             </a>
             <a href="{% url 'accounts:del_dr_not' notification.id %}">
                 <img src="{% static 'accounts/images/delete.png' %}" style="display: inline-block;">
             </a>
         </div>
-	<!--
-			<a href="{% url 'accounts:del_dr_not' notification.id %}"><img src="{% static 'accounts/images/accept.png' %}"></a>
-			<a href="{% url 'accounts:del_dr_not' notification.id %}"><img src="{% static 'accounts/images/delete.png' %}"></a>
-	-->
 		{% endif %}
 	    </div>
             <p class="mb-1">{{ notification.text_not }}</p> <!-- Выводим значение атрибута text_not -->

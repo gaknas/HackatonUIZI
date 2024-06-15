@@ -11,14 +11,6 @@
 </head>
 
 <body>
-      <!--<nav class="navbar">
-            <img style="margin: 10px" src="./images/logo_center.png" width="120" height="120" alt="logo">
-            
-            <div class="auth-data" style="text-align: center;">
-              <p style="margin-right: 10px;">Вы авторизированы как HR</p>
-              <a href="">Logout</a>
-            </div>
-      </nav> -->   
       <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
           <a class="navbar-brand" href="#">
@@ -35,9 +27,15 @@
               <li class="nav-item">
 		      <a class="nav-link" href="{% url 'accounts:mr-cab-hr' user_id=uid %}">Управление кадрами</a>
               </li>
+	      {% if notifications %}
+	      <li class="nav-item">
+			<a class="nav-link" href="{% url 'accounts:mr-cab-not' user_id=uid %}" style="color: red; font-weight: bold;">Уведомления</a>
+	      </li>
+	      {% else %}
               <li class="nav-item">
-		      <a class="nav-link" href="{% url 'accounts:mr-cab-not' user_id=uid %}">Уведомления от врачей</a>
+		      <a class="nav-link" href="{% url 'accounts:mr-cab-not' user_id=uid %}">Уведомления</a>
               </li>
+	      {% endif %}
               <li class="nav-item">
 		      <a class="nav-link"  href="{% url 'accounts:mr-cab-pred' user_id=uid %}">Прогнозирование количества исследований</a>
               </li>
@@ -59,43 +57,38 @@
               <th class="th">Статус</th>
             </tr>
           </thead>
-          <tbody>
-            <tr>
-              <td class="td">Врач 1</td>
-              <td class="td">РГ</td>
-              <td class="td">ММГ, КТ, МРТ</td>
-              <td class="td"><span class="badge text-bg-success rounded-pill">Работает</span></td>
-	      <td class="td"><a href=""><img src="{% static 'accounts/images/delete.png' %}" /></a> <a href=""><img src="{% static 'accounts/images/look.png' %}" /></a></td>
-            </tr>
-            <tr>
-              <td class="td">Врач 2</td>
-              <td class="td">РГ</td>
-              <td class="td">КТ</td>
-              <td class="td"><span class="badge text-bg-secondary rounded-pill">Отгул</span></td>
-	      <td class="td"><a href=""><img src="{% static 'accounts/images/delete.png' %}" /></a> <a href=""><img src="{% static 'accounts/images/look.png' %}" /></a></td>
-            </tr>
-          </tbody>
+	  <tbody>
+        {% for employee in employees %}
+        <tr>
+            <td class="td">{{ employee.user.username }}</td>
+            <td class="td">{{ employee.primary_skill }}</td>
+            <td class="td">{{ employee.secondary_skills }}</td>
+            <td class="td"><span class="badge text-bg-success rounded-pill">{{ employee.status }}</span></td>
+	    <td class="td"><a href="{% url 'accounts:remove_emp' %}"><img src="{% static 'accounts/images/delete.png' %}" /></a></a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
           <tfoot>
             <tr>
-		   <form id="fileUploadForm" action="{% url 'accounts:excel_import_employee' %}" method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    <th class="th" colspan="11">
-        <label for="excelFileEmp" class="btn btn-primary">Внести данные из Excel</label>
-        <input type="file" id="excelFileEmp" name="excel_file_emp" style="display: none;" accept=".xls,.xlsx" required>
-        <button type="submit" id="SubmitExcel" class="btn btn-primary" style="display: none;">Выгрузить</button>
-	<button type="submit" id="submitAddDr" class="btn btn-primary">Добавить врача</button>
-    </th>
-</form>
+	   <form id="fileUploadForm" action="{% url 'accounts:excel_import_employee' %}" method="post" enctype="multipart/form-data">
+    		{% csrf_token %}
+    		<th class="th" colspan="11">
+        	<label for="excelFileEmp" class="btn btn-primary">Внести данные из Excel</label>
+        	<input type="file" id="excelFileEmp" name="excel_file_emp" style="display: none;" accept=".xls,.xlsx" required>
+        	<button type="submit" id="SubmitExcel" class="btn btn-primary" style="display: none;">Выгрузить</button>
+		<button type="submit" id="submitAddDr" class="btn btn-primary">Добавить врача</button>
+   		</th>
+	   </form>
 
-<script>
-    document.getElementById('excelFileEmp').addEventListener('change', function() {
-        document.getElementById('SubmitExcel').style.display = 'inline-block';
-    });
+	<script>		
+    		document.getElementById('excelFileEmp').addEventListener('change', function() {
+        	document.getElementById('SubmitExcel').style.display = 'inline-block';
+    	});
 
-	document.getElementById('submitAddDr').addEventListener('click', function() {
-        window.location.href = "{% url 'accounts:add_dr' %}";
-    });
-</script>
+		document.getElementById('submitAddDr').addEventListener('click', function() {
+        	window.location.href = "{% url 'accounts:add_dr' %}";
+    	});
+	</script>
             </tr>
           </tfoot>
         </table>

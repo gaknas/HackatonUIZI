@@ -18,4 +18,6 @@ urlpatterns = [
         path('accounts/add_dr', views.add_dr, name = 'add_dr'),
         path('accounts/add_dr_submit', views.add_dr_submit, name = 'add_dr_submit'),
         path('accounts/delete_dr/<int:notif_id>', views.del_dr_not, name = 'del_dr_not'),
+        path('accounts/active_dr/<int:notif_id>', views.add_dr_not, name = 'add_dr_not'),
+        path('accounts/remove_emp', views.remove_emp, name='remove_emp'),
 ]
