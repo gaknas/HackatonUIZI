@@ -239,7 +239,14 @@
           </tbody>
           <tfoot>
 	    <tr>
-              <th class="th" colspan="42"><button class="btn btn-primary">Добавить врача</button></th>
+<th class="th" colspan="42">
+	      <button type="submit" id="submitAddDr" class="btn btn-primary">Добавить врача</button>
+	      <script>
+		      document.getElementById('submitAddDr').addEventListener('click', function() {
+        window.location.href = "{% url 'accounts:add_dr' %}";
+    });
+</script>
+</th>
             </tr>
           </tfoot>
         </table>

@@ -20,7 +20,7 @@ class Employee(models.Model):
         verbose_name = 'Сотрудник'
         verbose_name_plural = 'Сотрудники'
 
-class Shedule(models.Model):
+class Schedule(models.Model):
     sys_user = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name = 'shedule', null=True)
     day_of_month = models.DateField()
     time_start = models.TimeField()

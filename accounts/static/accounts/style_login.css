@@ -39,6 +39,17 @@ label {
     font-weight: bold;
 }
 
+select {
+    display: block;
+    width: 100%;
+    margin-bottom: 15px;
+    padding: 10px;
+    box-sizing: border-box;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-family: 'Myriad Pro', sans-serif;
+}
+
 input {
     display: block;
     width: 100%;

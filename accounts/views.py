@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.files.storage import default_storage
 import subprocess
-from .models import Shedule, Employee
+from .models import Schedule, Employee
 import openpyxl
 import pandas as pd
 from accounts.models import ExcelModel
@@ -116,15 +116,23 @@ def excel_import_employee(request):
 
 @login_required
 def add_dr(request):
-    if request.method == 'POST':
-        uid = Employee.objects.get(user=User.objects.get(username=request.user)).user_id
-        fio = request.POST.get('fio')
+    uid = Employee.objects.get(user=User.objects.get(username=request.user)).user_id
+    if Employee.objects.get(user_id=uid).role != 1:
+        return render(request, 'accounts/add_dr.html')
+    return redirect('accounts:login')
+
+@login_required
+def add_dr_submit(request):
+    uid = Employee.objects.get(user=User.objects.get(username=request.user)).user_id
+    if request.method == 'POST' and Employee.objects.get(user_id=uid).role != 1:
+        fio = request.POST.get('FIO')
         username = request.POST.get('username')
         password = request.POST.get('password')
         role = request.POST.get('role')
         bid = request.POST.get('bid')
         primary_skill = request.POST.get('primary_skill')
         secondary_skills = request.POST.getlist('secondary_skills')
-        user = Employee.objects.create(user = User.objects.create_user(username, first_name=fio, password=password), role=role, bid=bid,primary_skill=primary_skill, secondary_skills=secondary_skills)
+        user = Employee.objects.create(user = User.objects.create_user(username=username, first_name=fio, password=password, is_active=0), role=role, bid=bid,primary_skill=primary_skill, secondary_skills=secondary_skills)
         user.save()
-    return redirect('accounts:mr-cab-hr', user_id=uid) 
+        return redirect('accounts:mr-cab-hr', user_id=uid) 
+    return redirect('accounts:login')

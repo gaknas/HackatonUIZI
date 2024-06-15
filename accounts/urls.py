@@ -16,4 +16,5 @@ urlpatterns = [
         path('accounts/excel_count', views.excel_import_count, name='excel_import_count'),
         path('accounts/excel_emp', views.excel_import_employee, name = 'excel_import_employee'),
         path('accounts/add_dr', views.add_dr, name = 'add_dr'),
+        path('accounts/add_dr_submit', views.add_dr_submit, name = 'add_dr_submit'),
 ]

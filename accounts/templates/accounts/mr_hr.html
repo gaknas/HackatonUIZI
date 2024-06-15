@@ -82,29 +82,21 @@
     <th class="th" colspan="11">
         <label for="excelFileEmp" class="btn btn-primary">Внести данные из Excel</label>
         <input type="file" id="excelFileEmp" name="excel_file_emp" style="display: none;" accept=".xls,.xlsx" required>
-        <button type="submit" id="Submit" class="btn btn-primary" style="display: none;">Выгрузить</button>
-	<button class="btn btn-primary">Добавить врача</button>
+        <button type="submit" id="SubmitExcel" class="btn btn-primary" style="display: none;">Выгрузить</button>
+	<button type="submit" id="submitAddDr" class="btn btn-primary">Добавить врача</button>
     </th>
 </form>
 
 <script>
     document.getElementById('excelFileEmp').addEventListener('change', function() {
-        document.getElementById('Submit').style.display = 'inline-block';
+        document.getElementById('SubmitExcel').style.display = 'inline-block';
+    });
+
+	document.getElementById('submitAddDr').addEventListener('click', function() {
+        window.location.href = "{% url 'accounts:add_dr' %}";
     });
 </script>
             </tr>
-	    <form id="popup-form" method="post" action="{% url 'accounts:add_dr' %}">
-        {% csrf_token %}
-        <input type="text" name="fio" placeholder="ФИО"><br>
-        <input type="text" name="username" placeholder="Username"><br>
-        <input type="password" name="password" placeholder="Password"><br>
-        <input type="text" name="role" placeholder="Role"><br>
-        <input type="text" name="bid" placeholder="Bid"><br>
-        <input type="text" name="primary_skill" placeholder="Primary Skill"><br>
-        <input type="text" name="secondary_skills" placeholder="Secondary Skills" multiple><br>
-
-        <button type="submit">Submit</button>
-    </form>
           </tfoot>
         </table>
       </div>
