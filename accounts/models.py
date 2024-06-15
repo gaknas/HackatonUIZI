@@ -12,17 +12,27 @@ class Employee(models.Model):
     primary_skill = models.CharField(max_length=128, default='')
     secondary_skills = models.CharField(max_length=128, default='')
     bid = models.DecimalField(max_digits=3, decimal_places=2, default='1.00')
-    shed = models.TextField(default='')
-    month_shed = models.TextField(default='')
+    shed = models.TextField(default='',blank=True, null=True)
+    month_shed = models.TextField(default='',null=True)
 
     def get_shed_as_list(self, shed_id):
         if not shed_id:
-            return [int(num) for num in self.shed.split(',')]
+            if len(self.shed) != 0:
+                return [int(num) for num in self.shed.split(',')]
+            else:
+                return []
         else:
-            return [int(num) for num in self.month_shed.split(',')]
+            if len(self.month_shed) != 0:
+                return [int(num) for num in self.month_shed.split(',')]
+            else:
+                return []
 
-    def add_list_to_shed(self, field):
-        field_list = self.get_shed_as_list()
+    def add_list_to_shed(self, field, shed_id):
+        if not shed_id:
+            print(self.get_shed_as_list(0))
+            field_list = self.get_shed_as_list(0)
+        else:
+            field_list = self.get_shed_as_list(1)
         field_list.append(field)
         if not shed_id:
             self.shed = ','.join(str(num) for num in field_list)

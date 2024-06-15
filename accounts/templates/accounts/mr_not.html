@@ -55,8 +55,18 @@
                 <h5 class="mb-1">{{ notification.name_emp }}</h5> <!-- Выводим значение атрибута name_emp -->
 		{% if notification.type_not %}
             	{% else %}
-			<a href="{% url 'accounts:del_notification' notification.id %}"><img src="{% static 'accounts/images/accept.png' %}"></a>
-			<a href="{% url 'accounts:del_notification' notification.id %}"><img src="{% static 'accounts/images/delete.png' %}"></a>
+		<div>
+            <a href="{% url 'accounts:del_dr_not' notification.id %}">
+                <img src="{% static 'accounts/images/accept.png' %}" style="display: inline-block;">
+            </a>
+            <a href="{% url 'accounts:del_dr_not' notification.id %}">
+                <img src="{% static 'accounts/images/delete.png' %}" style="display: inline-block;">
+            </a>
+        </div>
+	<!--
+			<a href="{% url 'accounts:del_dr_not' notification.id %}"><img src="{% static 'accounts/images/accept.png' %}"></a>
+			<a href="{% url 'accounts:del_dr_not' notification.id %}"><img src="{% static 'accounts/images/delete.png' %}"></a>
+	-->
 		{% endif %}
 	    </div>
             <p class="mb-1">{{ notification.text_not }}</p> <!-- Выводим значение атрибута text_not -->

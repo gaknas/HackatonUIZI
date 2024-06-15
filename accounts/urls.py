@@ -17,5 +17,5 @@ urlpatterns = [
         path('accounts/excel_emp', views.excel_import_employee, name = 'excel_import_employee'),
         path('accounts/add_dr', views.add_dr, name = 'add_dr'),
         path('accounts/add_dr_submit', views.add_dr_submit, name = 'add_dr_submit'),
-        path('accounts/delete_dr/<int:notif_id>', views.del_notification, name = 'del_notification'),
+        path('accounts/delete_dr/<int:notif_id>', views.del_dr_not, name = 'del_dr_not'),
 ]
