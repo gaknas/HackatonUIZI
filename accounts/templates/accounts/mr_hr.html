@@ -60,11 +60,11 @@
 	  <tbody>
         {% for employee in employees %}
         <tr>
-            <td class="td">{{ employee.user.username }}</td>
+            <td class="td">{{ employee.user.first_name }}</td>
             <td class="td">{{ employee.primary_skill }}</td>
             <td class="td">{{ employee.secondary_skills }}</td>
             <td class="td"><span class="badge text-bg-success rounded-pill">{{ employee.status }}</span></td>
-	    <td class="td"><a href="{% url 'accounts:remove_emp' %}"><img src="{% static 'accounts/images/delete.png' %}" /></a></a></td>
+	    <td class="td"><a href="{% url 'accounts:remove_emp' employee.user_id %}"><img src="{% static 'accounts/images/delete.png' %}" /></a></a></td>
         </tr>
         {% endfor %}
     </tbody>

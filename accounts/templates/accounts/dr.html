@@ -19,7 +19,7 @@
       <div class="timetable">
             <div class="header">
                   <h1>Расписание на неделю</h1>
-		  <a href=""><img class="report" src="{% static 'accounts/images/em.png' %}" width="50" height="50" title="Сообщить о необходимости в изменении расписания"/></a>
+		  <a href="{% url 'accounts:add_appeal' %}"><img class="report" src="{% static 'accounts/images/em.png' %}" width="50" height="50" title="Сообщить о необходимости в изменении расписания"/></a>
             </div>
 
         <div class="timetable-grid">

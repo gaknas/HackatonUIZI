@@ -52,7 +52,9 @@
             <div class="d-flex w-100 justify-content-between">
                 <h5 class="mb-1">{{ notification.name_emp }}</h5> <!-- Выводим значение атрибута name_emp -->
 		{% if notification.type_not %}
-			
+		    <a href="{% url 'accounts:remove_notification' notification.id %}">
+                    	<img src="{% static 'accounts/images/delete.png' %}" style="display: inline-block;">
+            	    </a>			
             	{% else %}
 		<div>
             <a href="{% url 'accounts:add_dr_not' notification.id %}">

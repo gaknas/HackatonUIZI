@@ -1,3 +1,4 @@
+from django.http import HttpResponseForbidden
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -177,9 +178,36 @@ def add_dr_not(request, notif_id):
     return redirect('accounts:mr-cab-not', user_id = Employee.objects.get(user=User.objects.get(username=request.user)).user_id)
 
 @login_required
-def remove_emp(request, user_id):
-    emp = Employee.objects.get(user_id=user_id)
-    usr = User.objects.get(id=user_id)
+def remove_emp(request, emp_id):
+    emp = Employee.objects.get(user_id=emp_id)
+    usr = User.objects.get(id=emp_id)
     emp.delete()
     usr.delete()
-    return rediredt('accounts:mr-cat-hr', user_id=User.objects.get(id=request.user.pk))
+    return redirect('accounts:mr-cab-hr', user_id=request.user.pk)
+
+@login_required
+def add_appeal(request):
+    if Employee.objects.get(user_id=request.user.pk).role == 1:
+        return render(request, 'accounts/add_appeal.html')
+    else:
+        return redirect('accounts:login')
+
+@login_required
+def add_appeal_submit(request):
+    if Employee.objects.get(user_id=request.user.pk).role == 1:
+        text = request.POST.get('salutation')
+        name = User.objects.get(id=request.user.pk).first_name
+        print(name)
+        if text:
+            notif = Notification.objects.create(user_id=request.user.pk, type_not=1, text_not=text, name_emp=name)
+            notif.save()
+            return redirect('accounts:dr-cab', user_id=request.user.pk)
+        else:
+            return render(request, 'accounts/add_appeal.html', {'error':'Введите сообщение'})
+    return redirect('accounts:login')
+
+@login_required
+def remove_notification(request, notif_id):
+    notif = Notification.objects.get(id=notif_id)
+    notif.delete()
+    return redirect('accounts:mr-cab-not', user_id = Employee.objects.get(user=User.objects.get(username=request.user)).user_id)

@@ -19,5 +19,8 @@ urlpatterns = [
         path('accounts/add_dr_submit', views.add_dr_submit, name = 'add_dr_submit'),
         path('accounts/delete_dr/<int:notif_id>', views.del_dr_not, name = 'del_dr_not'),
         path('accounts/active_dr/<int:notif_id>', views.add_dr_not, name = 'add_dr_not'),
-        path('accounts/remove_emp', views.remove_emp, name='remove_emp'),
+        path('accounts/remove_emp/<int:emp_id>', views.remove_emp, name='remove_emp'),
+        path('accounts/add_appeal', views.add_appeal, name='add_appeal'),
+        path('accounts/add_appeal_submit', views.add_appeal_submit, name='add_appeal_submit'),
+        path('accounts/remove_notification/<int:notif_id>', views.remove_notification, name='remove_notification'),
 ]

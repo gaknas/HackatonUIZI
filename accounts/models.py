@@ -16,33 +16,38 @@ class Employee(models.Model):
     month_shed = models.TextField(default='', null=True)
     time_per_week = models.TextField(default='', null=True)
     def get_shed_as_list(self, shed_id):
-        if not shed_id:
+        return []
+        if shed_id == 0:
             if len(self.shed) != 0:
                 return [int(num) for num in self.shed.split(',')]
             else:
                 return []
-        else:
+        if shed_id == 1:
             if len(self.month_shed) != 0:
                 return [int(num) for num in self.month_shed.split(',')]
             else:
                 return []
-
-    def set_time(self, field):
-        self.time_per_week = []
-
+        if shed_id == 2:
+            if len(self.time_per_week) != 0:
+                return [int(num) for num in self.time_per_week.split(',')]
+            else:
+                return []
 
     def add_list_to_shed(self, field, shed_id):
-        if not shed_id:
-            print(self.get_shed_as_list(0))
+        if shed_id == 0:
             field_list = self.get_shed_as_list(0)
-        else:
+        if shed_id == 1:
             field_list = self.get_shed_as_list(1)
+        if shed_id == 2:
+            field_list = self.get_shed_as_list(2)
         field_list.append(field)
-        if not shed_id:
+        if shed_id == 0:
             self.shed = ','.join(str(num) for num in field_list)
-        else:
+        if shed_id == 1:
             self.month_shed = ','.join(str(num) for num in field_list)
-        
+        if shed_id == 2:
+            self.time_per_week = ','.join(str(num) for num in field_list)
+
     def set_num_at_index(self, index, value, shed_id):
         field_list = self.get_shed_at_list(shed_id)
         if index >= 0 and index <= len(field_list):

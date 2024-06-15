@@ -1,4 +1,5 @@
 import random
+import sqlite3
 import os
 import django
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'web.settings')
@@ -98,11 +99,6 @@ def colt_nedel(year, week, schedule, masso):
     return array_obh, b_arr1
 
 
-year = 2024 # год
-week = 2 # номер недели
-# введи 1 если расписание 1/1
-# введи 2 если расписание 2/2
-# введи 3 если расписание 5/2
 #schedule = 3
 #masso = [1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0]
 #colt_nedel(year, week, schedule, masso)
@@ -131,13 +127,21 @@ def creating():
 
     return i, norms[i], day_available[i][j][:]
 
+
+
+conn = sqlite3.connect('db.sqlite3')
+cursor = conn.cursor()
 employees = Employee.objects.filter(role='1')
 for employee in employees:
     i, norms, day_available = creating()
-    print(i)
     employee.add_list_to_shed(norms, 0)
-    
-    #employee.add_list_to_shed(day_available, 1)
+    year = cursor.execute('SELECT * FROM accounts_excelmodel ORDER BY "index" DESC LIMIT 1 OFFSET 1;')
+    year = year.fetchone()[1]
+    week = cursor.execute('SELECT * FROM accounts_excelmodel ORDER BY "index" DESC LIMIT 1 OFFSET 1;')
+    week = week.fetchone()[2]
+    arr,barr = colt_nedel(year, week, i+1, day_available)
+    employee.add_list_to_shed(barr, 1)
+    employee.add_list_to_shed(arr, 2)
     employee.save()
     
 print("success")
