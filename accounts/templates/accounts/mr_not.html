@@ -48,23 +48,18 @@
         </div>
       </nav>
       <div class="notifications">
-        <div class="list-group" style="width: 95%;">
-          <div class="list-group-item list-group-item-action">
+    <div class="list-group" style="width: 95%;">
+    {% for notification in notifications %}
+        <div class="list-group-item list-group-item-action">
             <div class="d-flex w-100 justify-content-between">
-              <h5 class="mb-1">Врач 1</h5>
-	      <a href="/"><img src="{% static 'accounts/images/delete.png' %}"></a>
+                <h5 class="mb-1">{{ notification.name_emp }}</h5> <!-- Выводим значение атрибута name_emp -->
+                <a href="/"><img src="{% static 'accounts/images/delete.png' %}"></a>
             </div>
-            <p class="mb-1">Прошу освободить пятницу</p>
-          </div>
-          <div class="list-group-item list-group-item-action">
-            <div class="d-flex w-100 justify-content-between">
-              <h5 class="mb-1">Врач 1</h5>
-	      <a href="/"><img src="{% static 'accounts/images/delete.png' %}"></a>
-            </div>
-            <p class="mb-1">Прошу освободить пятницу</p>
-          </div>
+            <p class="mb-1">{{ notification.text_not }}</p> <!-- Выводим значение атрибута text_not -->
         </div>
-      </div>
+    {% endfor %}
+    </div>
+</div>
 </body>
 
 </html>

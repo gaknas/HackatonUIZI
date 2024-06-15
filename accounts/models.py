@@ -50,4 +50,9 @@ class ExcelModel(models.Model):
     rg = models.IntegerField()
     flu = models.IntegerField()
 
+class Notification(models.Model):
+    user_id = models.IntegerField()
+    type_not = models.BooleanField()
+    text_not = models.TextField(default='')
+    name_emp = models.TextField(default='')
     
