@@ -31,3 +31,9 @@ body {
   .th, .td {
     border: 1px solid grey
   }
+
+  .actions {
+    justify-content: center;
+    display: flex;
+    margin: 10px;
+  }
