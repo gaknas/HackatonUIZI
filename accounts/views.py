@@ -1,4 +1,4 @@
-from django.http import HttpResponseForbidden
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -59,9 +59,11 @@ def acc_dr_home_view(request, user_id):
 @login_required
 def acc_hr_home_view(request, user_id):
     if request.user.pk == user_id and Employee.objects.get(user_id=user_id).role == 2:
-        return render(request, 'accounts/hr.html')
+        employees = Employee.objects.filter(role=1)
+        schedules = Schedule.objects.all()
+        return render(request, 'accounts/hr.html', {'employees':employees})
     else:
-        return redirect('/')
+        return redirect('accounts:logout')
 
 @login_required
 def acc_mr_month_view(request, user_id):
@@ -69,7 +71,7 @@ def acc_mr_month_view(request, user_id):
         notifications = Notification.objects.all()
         return render(request, 'accounts/mr_month.html', {'uid': user_id, 'notifications':notifications})
     else:
-        return redirect('/')
+        return redirect('accounts:logout')
 
 @login_required
 def acc_mr_hr_view(request, user_id):
@@ -78,7 +80,7 @@ def acc_mr_hr_view(request, user_id):
         employees = Employee.objects.all()
         return render(request, 'accounts/mr_hr.html', {'uid': user_id, 'notifications':notifications, 'employees':employees})
     else:
-        return redirect('/')
+        return redirect('accounts:logout')
 
 @login_required
 def acc_mr_not_view(request, user_id):
@@ -86,15 +88,19 @@ def acc_mr_not_view(request, user_id):
         notifications = Notification.objects.all()
         return render(request, 'accounts/mr_not.html', {'uid': user_id, 'notifications':notifications})
     else:
-        return redirect('/')
+        return redirect('accounts:logout')
 
 @login_required
 def acc_mr_pred_view(request, user_id):
     if request.user.pk == user_id and Employee.objects.get(user_id=user_id).role == 3:
         notifications = Notification.objects.all()
-        return render(request, 'accounts/mr_pred.html', {'uid': user_id, 'notifications':notifications})
+        conn = sqlite3.connect('db.sqlite3')
+        cursor = conn.cursor()
+        raw = cursor.execute('SELECT * FROM accounts_excelmodel ORDER BY "index" DESC LIMIT 4;').fetchall()
+        predictions=[{'id':r[0],'year':r[1],'week_num':r[2],'dens':r[3],'kt':r[4],'kt1':r[5],'kt2':r[6],'mmg':r[7],'mrt':r[8],'mrt1':r[9],'mrt2':r[10],'rg':r[11],'flu':r[12]} for r in reversed(raw)]
+        return render(request, 'accounts/mr_pred.html', {'uid': user_id, 'notifications':notifications, 'predictions':predictions})
     else:
-        return redirect('/')
+        return redirect('accounts:logout')
 
 @login_required
 def excel_import_count(request):
@@ -179,11 +185,14 @@ def add_dr_not(request, notif_id):
 
 @login_required
 def remove_emp(request, emp_id):
-    emp = Employee.objects.get(user_id=emp_id)
-    usr = User.objects.get(id=emp_id)
-    emp.delete()
-    usr.delete()
-    return redirect('accounts:mr-cab-hr', user_id=request.user.pk)
+    if Employee.objects.get(user_id=request.user.pk).role == 3:
+        emp = Employee.objects.get(user_id=emp_id)
+        usr = User.objects.get(id=emp_id)
+        emp.delete()
+        usr.delete()
+        return redirect('accounts:mr-cab-hr', user_id=request.user.pk)
+    else:
+        return redirect('accounts:login')
 
 @login_required
 def add_appeal(request):
@@ -211,3 +220,14 @@ def remove_notification(request, notif_id):
     notif = Notification.objects.get(id=notif_id)
     notif.delete()
     return redirect('accounts:mr-cab-not', user_id = Employee.objects.get(user=User.objects.get(username=request.user)).user_id)
+
+@login_required
+def download_pred(request):
+    if Employee.objects.get(user_id=request.user.pk).role == 3:
+        file_path = "doctor.xlsx"
+        with open(file_path, 'rb') as file:
+            response = HttpResponse(file.read(), content_type='application/octet-stream')
+            response['Content-Disposition'] = 'attachment; filename="Im a doctor.xlsx"'
+            return response
+    else:
+        return redirect('accounts:login')

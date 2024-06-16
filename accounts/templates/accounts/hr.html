@@ -65,11 +65,12 @@
             </tr>
           </thead>
           <tbody>
+	    {% for employee in employees %}
             <tr>
-              <td class="td" rowspan="4">Врач 1</td>
-              <td class="td" rowspan="4">РГ</td>
-              <td class="td" rowspan="4">КТ, ММГ, ФЛГ, Денситометрия</td>
-              <td class="td" rowspan="4">1</td>
+	      <td class="td" rowspan="4">{{employee.user.first_name}}</td>
+	      <td class="td" rowspan="4">{{employee.primary_skill}}</td>
+	      <td class="td" rowspan="4">{{employee.secondary_skills}}</td>
+	      <td class="td" rowspan="4">{{employee.bid}}</td>
               <td class="td">с</td>
               <td class="td">8:00</td>
               <td class="td"></td>
@@ -206,11 +207,12 @@
               <td class="td"></td>
               <td class="td"></td>
             </tr>
+	    {% endfor %}
           </tbody>
           <tfoot>
             <tr>
 		    <th class="th" colspan="42">
-              <button type="submit" id="submitAddDr" class="btn btn-primary">Добавить врача</button>
+              <button type="submit" id="submitAddDr" class="btn btn-primary">Добавить cотрудника</button>
               <script>
                       document.getElementById('submitAddDr').addEventListener('click', function() {
         window.location.href = "{% url 'accounts:add_dr' %}";

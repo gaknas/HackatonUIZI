@@ -54,7 +54,7 @@
           </div>
         </div>
       </nav>
-      <h3 style="text-align: center;">Прогноз на июнь</h3>
+      <h3 style="text-align: center;">Прогноз</h3>
       <div class="table-container">
         <table>
           <thead>
@@ -76,70 +76,34 @@
             </tr>
           </thead>
           <tbody>
+	    {% for prediction in predictions %}
             <tr>
-              <td class="td">23 неделя</td>
-              <td class="td">1000</td>
-              <td class="td">1000</td>
-              <td class="td">1000</td>
-              <td class="td">1000</td>
-              <td class="td">1000</td>
-              <td class="td">1000</td>
-              <td class="td">1000</td>
-              <td class="td">1000</td>
-              <td class="td">1000</td>
-              <td class="td">1000</td>
+	      <td class="td">{{prediction.week_num}} неделя</td>
+	      <td class="td">{{prediction.dens}}</td>
+	      <td class="td">{{prediction.kt}}</td>
+	      <td class="td">{{prediction.kt1}}</td>
+              <td class="td">{{prediction.kt2}}</td>
+              <td class="td">{{prediction.mmg}}</td>
+              <td class="td">{{prediction.mrt}}</td>
+	      <td class="td">{{prediction.mrt1}}</td>
+	      <td class="td">{{prediction.mrt2}}</td>
+	      <td class="td">{{prediction.rg}}</td>
+	      <td class="td">{{prediction.flu}}</td>
             </tr>
-            <tr>
-              <td class="td">24 неделя</td>
-              <td class="td">1000</td>
-              <td class="td">1000</td>
-              <td class="td">1000</td>
-              <td class="td">1000</td>
-              <td class="td">1000</td>
-              <td class="td">1000</td>
-              <td class="td">1000</td>
-              <td class="td">1000</td>
-              <td class="td">1000</td>
-              <td class="td">1000</td>
-            </tr>
-            <tr>
-              <td class="td">25 неделя</td>
-              <td class="td">1000</td>
-              <td class="td">1000</td>
-              <td class="td">1000</td>
-              <td class="td">1000</td>
-              <td class="td">1000</td>
-              <td class="td">1000</td>
-              <td class="td">1000</td>
-              <td class="td">1000</td>
-              <td class="td">1000</td>
-              <td class="td">1000</td>
-            </tr>
-            <tr>
-              <td class="td">26 неделя</td>
-              <td class="td">1000</td>
-              <td class="td">1000</td>
-              <td class="td-danger">1000</td>
-              <td class="td">1000</td>
-              <td class="td">1000</td>
-              <td class="td">1000</td>
-              <td class="td">1000</td>
-              <td class="td">1000</td>
-              <td class="td">1000</td>
-              <td class="td">1000</td>
-            </tr>
+	    {% endfor %}
           </tbody>
           <tfoot>
             <tr>
 		   <form id="fileUploadForm" action="{% url 'accounts:excel_import_count' %}" method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    <th class="th" colspan="11">
-        <label for="excelFile" class="btn btn-primary">Внести данные из Excel</label>
-        <input type="file" id="excelFile" name="excel_file" style="display: none;" accept=".xls,.xlsx" required>
-        <button type="submit" id="Submit" class="btn btn-primary" style="display: none;">Выгрузить</button>
-	{% if success %}
-		Данные успешно загружены
-	{% endif %}
+    		{% csrf_token %}
+    		<th class="th" colspan="11">
+        	<label for="excelFile" class="btn btn-primary">Внести данные из Excel</label>
+        	<input type="file" id="excelFile" name="excel_file" style="display: none;" accept=".xls,.xlsx" required>
+        	<button type="submit" id="Submit" class="btn btn-primary" style="display: none;">Выгрузить</button>
+		<button id="download-button" class="btn btn-primary">Скачать предсказания</button>
+		{% if success %}
+		<h3>Данные успешно загружены</h3>
+		{% endif %}
     </th>
 </form>
 
@@ -147,6 +111,9 @@
     document.getElementById('excelFile').addEventListener('change', function() {
         document.getElementById('Submit').style.display = 'inline-block';
     });
+        document.getElementById("download-button").addEventListener("click", function() {
+            window.location.href = "{% url 'accounts:download_pred' %}";
+        });
 </script>
             </tr>
           </tfoot>

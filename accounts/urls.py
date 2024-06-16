@@ -23,4 +23,5 @@ urlpatterns = [
         path('accounts/add_appeal', views.add_appeal, name='add_appeal'),
         path('accounts/add_appeal_submit', views.add_appeal_submit, name='add_appeal_submit'),
         path('accounts/remove_notification/<int:notif_id>', views.remove_notification, name='remove_notification'),
+        path('accounts/download_pred', views.download_pred, name='download_pred'),
 ]
