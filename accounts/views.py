@@ -238,7 +238,24 @@ def download_pred(request):
         conn.close()
         with open(output_file, 'rb') as file:
             response = HttpResponse(file.read(), content_type='application/octet-stream')
-            response['Content-Disposition'] = 'attachment; filename="Im a doctor.xlsx"'
+            response['Content-Disposition'] = 'attachment; filename="Predictions.xlsx"'
             return response
     else:
         return redirect('accounts:login')
+
+@login_required
+def load_graph(request):
+    pass
+
+@login_required
+def save_graph(request):
+    if Employee.objects.get(user_id=request.user.pk).role == 3:
+        out = subprocess.run(['python', 'create_schedule.py'], stderr = subprocess.DEVNULL)
+        output_file = 'sched.xlsx'
+        with open(output_file, 'rb') as file:
+            response = HttpResponse(file.read(), content_type='application/octet-stream')
+            response['Content-Disposition'] = 'attachment; filename="Schedule.xlsx"'
+            return response
+    else:
+        return redirect('accounts:login')
+

@@ -66,7 +66,7 @@ class Employee(models.Model):
         verbose_name_plural = 'Сотрудники'
 
 class Schedule(models.Model):
-    sys_user = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name = 'shedule', null=True)
+    sys_user = models.ForeignKey(Employee, on_delete=models.CASCADE, null=True)
     day_of_month = models.DateField()
     time_start = models.TimeField()
     time_end = models.TimeField()
