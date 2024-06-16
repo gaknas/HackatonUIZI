@@ -69,7 +69,8 @@ def acc_hr_home_view(request, user_id):
 def acc_mr_month_view(request, user_id):
     if request.user.pk == user_id and Employee.objects.get(user_id=user_id).role == 3:
         notifications = Notification.objects.all()
-        return render(request, 'accounts/mr_month.html', {'uid': user_id, 'notifications':notifications})
+        employees = Employee.objects.all()
+        return render(request, 'accounts/mr_month.html', {'uid': user_id, 'notifications':notifications, 'employees':employees})
     else:
         return redirect('accounts:logout')
 

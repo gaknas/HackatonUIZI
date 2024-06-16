@@ -57,7 +57,7 @@
       <div class="table-container">
         <table>
           <thead>
-            <tr>
+		  <tr>
               <th class="th" rowspan="2">Фамилия, Имя, Отчество</th>
               <th class="th" rowspan="2">Модальность</th>
               <th class="th" rowspan="2">Дополнительные модальности</th>
@@ -101,11 +101,12 @@
             </tr>
           </thead>
           <tbody>
+	    {% for employee in employees %}
             <tr>
-              <td class="td" rowspan="4">Врач 1</td>
-              <td class="td" rowspan="4">РГ</td>
-              <td class="td" rowspan="4">КТ, ММГ, ФЛГ, Денситометрия</td>
-              <td class="td" rowspan="4">1</td>
+	      <td class="td" rowspan="4">{{employee.user.first_name}}</td>
+	      <td class="td" rowspan="4">{{employee.primary_skill}}</td>
+	      <td class="td" rowspan="4">{{employee.secondary_skills}}</td>
+	      <td class="td" rowspan="4">{{employee.bid}}</td>
               <td class="td">с</td>
               <td class="td">8:00</td>
               <td class="td"></td>
@@ -138,7 +139,7 @@
               <td class="td">8:00</td>
               <td class="td"></td>
               <td class="td"></td>
-	      <td class="td" rowspan="4"><a href=""><img src="{% static 'accounts/images/delete.png' %}" /></a></td>
+	      <td class="td" rowspan="4"><a href="{% url 'accounts:remove_emp' employee.user_id %}"><img src="{% static 'accounts/images/delete.png' %}" /></a></td>
             </tr>
             <tr>
               <td class="td">до</td>
@@ -242,6 +243,8 @@
               <td class="td"></td>
               <td class="td"></td>
             </tr>
+	    {% endfor %}
+
           </tbody>
           <tfoot>
 	    <tr>
