@@ -1,0 +1,43 @@
+<head>
+    <title>Центр телемедицины</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'accounts/style_login.css' %}">
+    <link rel="icon" href="{% static 'images/favicon.ico' %}">
+</head>
+<body>
+	{% load static %}
+    <div class="main">
+        <img src="{% static 'accounts/images/logo_horisontal.png' %}" />
+	{% if error %}
+                <p style="color: red;">{{ error }}</p>
+	{% else %}
+		<h3>Запрос на добавление нового пользователя</h3>
+        {% endif %}
+	
+	<form method="post" action="{% url 'accounts:add_dr_submit' %}">
+            {% csrf_token %}
+            <label for="username">Логин:</label>
+            <input type="text" id="username" name="username" placeholder="Введите логин для пользователя" required>
+            <label for="password">Пароль:</label>
+            <input type="password" id="password" name="password" placeholder="Введите пароль для пользователя" required>
+            <label for="FIO">ФИО:</label>
+            <input type="text" id="FIO" name="FIO" placeholder="Введите ФИО" required>
+            <label for="primary_skill">Модальность:</label>
+            <input type="text" id="primary_skill" name="primary_skill" placeholder="Введите основную модальность" required>
+            <label for="secondary_skills">Дополнительные модальности:</label>
+            <input type="text" id="secondary_skills" name="secondary_skills" placeholder="Введите дополнительные модальности">
+            <label for="bid">Ставка:</label>
+            <input type="text" id="bid" name="bid" placeholder="Введите ставку" required>
+	    <label for="role">Роль:</label>
+            <select id="role" name="role" required class="select-role">
+                <option value="1">Доктор</option>
+                <option value="2">Менеджер кадров</option>
+                <option value="3">Руководитель</option>
+            </select>
+            <div class="wrap">
+                <button type="submit">Подтвердить</button>
+            </div>
+        </form>
+    </div>
+</body>
+

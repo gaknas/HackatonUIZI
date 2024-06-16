@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+      {% load static %}
+      <title>Расписание</title>
+      <link rel="stylesheet" href="{% static 'accounts/style_dr.css' %}">
+      <link rel="icon" href="{% static 'images/favicon.ico' %}">
+</head>
+
+<body>
+      <nav class="navbar">
+	      <img style="margin: 10px" src="{% static 'accounts/images/logo_center.png' %}" width="120" height="120" alt="logo">
+            <div class="container" style="text-align: center;">
+              <p style="margin-right: 10px;">Вы авторизированы как врач</p>
+	      <a href="{% url 'accounts:logout' %}">Выйти</a>
+            </div>
+      </nav>
+      <div class="timetable">
+            <div class="header">
+                  <h1>Расписание на неделю</h1>
+		  <a href="{% url 'accounts:add_appeal' %}"><img class="report" src="{% static 'accounts/images/em.png' %}" width="50" height="50" title="Сообщить о необходимости в изменении расписания"/></a>
+            </div>
+
+        <div class="timetable-grid">
+          <div class="days">
+            <div class="day">День недели</div>
+            <div class="day">Понедельник</div>
+            <div class="day">Вторник</div>
+            <div class="day">Среда</div>
+            <div class="day">Четверг</div>
+            <div class="day">Пятница</div>
+            <div class="day">Суббота</div>
+            <div class="day">Воскресенье</div>
+          </div>
+          <div class="time-slots">
+            <div class="time-slot">Начало работы</div>
+            <div class="day">8:00</div>
+            <div class="day">-</div>
+            <div class="day">-</div>
+            <div class="day">8:00</div>
+            <div class="day">-</div>
+            <div class="day">8:00</div>
+            <div class="day">8:00</div>
+          </div>
+          <div class="time-slots">
+            <div class="time-slot">Конец работы</div>
+            <div class="day">20:30</div>
+            <div class="day">-</div>
+            <div class="day">-</div>
+            <div class="day">20:30</div>
+            <div class="day">-</div>
+            <div class="day">20:30</div>
+            <div class="day">19:30</div>
+          </div>
+          <div class="time-slots">
+            <div class="time-slot">Перерыв</div>
+            <div class="day">30 минут</div>
+            <div class="day">-</div>
+            <div class="day">-</div>
+            <div class="day">30 минут</div>
+            <div class="day">-</div>
+            <div class="day">30 минут</div>
+            <div class="day">30 минут</div>
+          </div>
+          <div class="time-slots">
+            <div class="time-slot">Тип исследования</div>
+            <div class="day">РГ</div>
+            <div class="day">-</div>
+            <div class="day">-</div>
+            <div class="day">РГ</div>
+            <div class="day">-</div>
+            <div class="day">РГ</div>
+            <div class="day">РГ</div>
+          </div>
+        </div>
+      </div>
+</body>
+
+</html>

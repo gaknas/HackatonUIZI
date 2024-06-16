@@ -1,0 +1,33 @@
+@font-face {
+    font-family: 'Myriad Pro';
+    src: url('../fonts/MyriadPro-Light.otf');
+}
+
+body {
+    font-family: 'Myriad Pro';
+    margin: 0;
+    padding: 0;
+  }
+  
+  .navbar {
+    justify-content: space-between;
+    display: flex;
+  }
+  .table-container {
+    justify-content: center;
+    display: flex;
+  }
+  table {
+    text-align: center;
+    border-collapse: collapse;
+    width: 80%;
+    border: 2px solid grey;
+  }
+  
+  th {
+    padding: 10px;
+  }
+  
+  .th, .td {
+    border: 1px solid grey
+  }
