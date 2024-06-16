@@ -7,6 +7,8 @@ import sqlite3
 import pandas as pd
 import datetime
 
+
+
 def check_for_overload(activities, schetchik, amount_for_month):
     mas = {}
     for key in schetchik.keys():
@@ -104,10 +106,10 @@ def zapolnenie_exel(all_docs,amount_for_weeks):
                     worksheet[strin4] = 12
 
                 elif doc.get_amount_of_hours_per_day(week, day) == 0:
-                    worksheet[strin1].value = 0
-                    worksheet[strin2].value = 0
-                    worksheet[strin3].value = 0
-                    worksheet[strin4].value = 0
+                    worksheet[strin1] = str(0)
+                    worksheet[strin2] = str(0)
+                    worksheet[strin3] = str(0)
+                    worksheet[strin4] = str(0)
                 else:
                     timee = all_docs[doc_id].get_amount_of_hours_per_day(week, day) + all_docs[doc_id].get_pereriv(week)[day]
                     worksheet[strin1] = str('8:00')
@@ -119,7 +121,7 @@ def zapolnenie_exel(all_docs,amount_for_weeks):
                     worksheet[strin4] = all_docs[doc_id].get_amount_of_hours_per_day(week, day)
                     shetchik_time += all_docs[doc_id].get_amount_of_hours_per_day(week, day)
 
-                #print(date)
+                print(date)
 
                 if date-3 == 15:
                     strin = 'V' + str(4 * doc_id + 6)
@@ -135,7 +137,7 @@ def zapolnenie_exel(all_docs,amount_for_weeks):
 
         doc_id += 1
 
-    workbook.save('sched.xlsx')
+    workbook.save('file_to_download.xlsx')
 
 def kostil(amount_for_week, worksheet, days_in_month, kost, book, schetchik):
     worksheet['A1'] = ''
@@ -219,11 +221,11 @@ def make_schedule_for_month(all_docs, activities, activities_UE, amount_for_week
 
         for day in range(0, len(all_docs[0].get_available_week_schedule(week))):
             amount_for_week = dict(amount_for_weeks[week])
-            #print('start:')
-            #print(amount_for_week)
+            print('start:')
+            print(amount_for_week)
 
             schetchik_for_day = update_schetchik(schetchik, all_docs, week,day)
-            #print(schetchik_for_day)
+            print(schetchik_for_day)
             flag = len(schetchik_for_day)
 
             while flag > 0:
@@ -255,16 +257,15 @@ def make_schedule_for_month(all_docs, activities, activities_UE, amount_for_week
                 schetchik_for_day.pop(min_key)
                 schetchik_for_day = update_schetchik(schetchik_for_day, all_docs, week,day)
                 flag-=1
-            #print('end:')
-            #print(amount_for_week)
+            print('end:')
+            print(amount_for_week)
             kostil(amount_for_week, worksheet, days_in_month, kost, book, schetchik)
             kost += 1
-            #print(schetchik_for_day)
+            print(schetchik_for_day)
     doc_id = 0
     schetchik_for_docs = 0
     workbook.save('kostil.xlsx')
     df = pd.read_excel('kostil.xlsx')
-    os.remove('kostil.xlsx')
 
     conn = sqlite3.connect('db.sqlite3')
     # Запись данных из Excel файла в базу данных
@@ -329,7 +330,7 @@ def make_schedule_for_month(all_docs, activities, activities_UE, amount_for_week
 
     conn = sqlite3.connect('db.sqlite3')
     # Запись данных из Excel файла в базу данных
-    df.to_sql('accounts_schedule', conn, if_exists='replace', index=True)
+    df.to_sql('time_schedule', conn, if_exists='replace', index=True)
     # Завершение работы с базой данных
     conn.commit()
     conn.close()
@@ -391,7 +392,7 @@ def get_amount_for_weeks(schetchik, activities_UE):
     week = cursor.execute('SELECT * FROM accounts_excelmodel ORDER BY "index" DESC LIMIT 1 OFFSET 1;')
     week = week.fetchone()[2]
     week_to_start_from = get_stuff(year,week)
-    #print(week_to_start_from)
+    print(week_to_start_from)
     cursor.execute(f'SELECT * FROM accounts_excelmodel ORDER BY "index" DESC LIMIT {week_to_start_from}')
     last_four_rows = cursor.fetchall()
 
@@ -433,13 +434,13 @@ def main():
 
     for key in activities_max_150:
         activities[key] = int(activities_max_150[key] / 1.5)
-    #print(activities)
+    print(activities)
     schetchik = make_schetchik(all_docs,schetchik)
-    #print(schetchik)
+    print(schetchik)
 
     amount_for_week = get_amount_for_weeks(schetchik, activities_UE)       #2022 15 данные для тестов
-    #print(amount_for_week)
-    #print(make_schedule_for_month(all_docs, activities,activities_UE, amount_for_week, schetchik))
+    print(amount_for_week)
+    print(make_schedule_for_month(all_docs, activities,activities_UE, amount_for_week, schetchik))
 
 
 main()

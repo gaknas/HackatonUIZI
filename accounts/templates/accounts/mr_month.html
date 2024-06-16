@@ -56,207 +56,27 @@
       </nav>
       <div class="table-container">
         <table>
-          <thead>
-		  <tr>
-              <th class="th" rowspan="2">Фамилия, Имя, Отчество</th>
-              <th class="th" rowspan="2">Модальность</th>
-              <th class="th" rowspan="2">Дополнительные модальности</th>
-              <th class="th" rowspan="2">Ставка</th>
-              <th class="th" rowspan="2"></th>
-              <th class="th" colspan="31">Числа месяца</th>
-              <th class="th" rowspan="2"></th>
-            </tr>
-            <tr>
-              <th class="th">1</th>
-              <th class="th">2</th>
-              <th class="th">3</th>
-              <th class="th">4</th>
-              <th class="th">5</th>
-              <th class="th">6</th>
-              <th class="th">7</th>
-              <th class="th">8</th>
-              <th class="th">9</th>
-              <th class="th">10</th>
-              <th class="th">11</th>
-              <th class="th">12</th>
-              <th class="th">13</th>
-              <th class="th">14</th>
-              <th class="th">15</th>
-              <th class="th">16</th>
-              <th class="th">17</th>
-              <th class="th">18</th>
-              <th class="th">19</th>
-              <th class="th">20</th>
-              <th class="th">21</th>
-              <th class="th">22</th>
-              <th class="th">23</th>
-              <th class="th">24</th>
-              <th class="th">25</th>
-              <th class="th">26</th>
-              <th class="th">27</th>
-              <th class="th">28</th>
-              <th class="th">29</th>
-              <th class="th">30</th>
-              <th class="th">31</th>
-            </tr>
-          </thead>
-          <tbody>
-	    {% for employee in employees %}
-            <tr>
-	      <td class="td" rowspan="4">{{employee.user.first_name}}</td>
-	      <td class="td" rowspan="4">{{employee.primary_skill}}</td>
-	      <td class="td" rowspan="4">{{employee.secondary_skills}}</td>
-	      <td class="td" rowspan="4">{{employee.bid}}</td>
-              <td class="td">с</td>
-              <td class="td">8:00</td>
-              <td class="td"></td>
-              <td class="td"></td>
-              <td class="td">8:00</td>
-              <td class="td"></td>
-              <td class="td">8:00</td>
-              <td class="td">8:00</td>
-              <td class="td"></td>
-              <td class="td"></td>
-              <td class="td"></td>
-              <td class="td">8:00</td>
-              <td class="td"></td>
-              <td class="td">8:00</td>
-              <td class="td"></td>
-              <td class="td">8:00</td>
-              <td class="td"></td>
-              <td class="td"></td>
-              <td class="td">8:00</td>
-              <td class="td"></td>
-              <td class="td">8:00</td>
-              <td class="td"></td>
-              <td class="td">8:00</td>
-              <td class="td"></td>
-              <td class="td"></td>
-              <td class="td">8:00</td>
-              <td class="td"></td>
-              <td class="td">8:00</td>
-              <td class="td"></td>
-              <td class="td">8:00</td>
-              <td class="td"></td>
-              <td class="td"></td>
-	      <td class="td" rowspan="4"><a href="{% url 'accounts:remove_emp' employee.user_id %}"><img src="{% static 'accounts/images/delete.png' %}" /></a></td>
-            </tr>
-            <tr>
-              <td class="td">до</td>
-              <td class="td">20:30</td>
-              <td class="td"></td>
-              <td class="td"></td>
-              <td class="td">20:30</td>
-              <td class="td"></td>
-              <td class="td">20:30</td>
-              <td class="td">19:30</td>
-              <td class="td"></td>
-              <td class="td"></td>
-              <td class="td"></td>
-              <td class="td">20:30</td>
-              <td class="td"></td>
-              <td class="td">20:30</td>
-              <td class="td"></td>
-              <td class="td">20:30</td>
-              <td class="td"></td>
-              <td class="td"></td>
-              <td class="td">20:30</td>
-              <td class="td"></td>
-              <td class="td">20:30</td>
-              <td class="td"></td>
-              <td class="td">20:30</td>
-              <td class="td"></td>
-              <td class="td"></td>
-              <td class="td">20:30</td>
-              <td class="td"></td>
-              <td class="td">20:30</td>
-              <td class="td"></td>
-              <td class="td">20:30</td>
-              <td class="td"></td>
-              <td class="td"></td>
-            </tr>
-            <tr>
-              <td class="td">перерыв</td>
-              <td class="td">30</td>
-              <td class="td"></td>
-              <td class="td"></td>
-              <td class="td">30</td>
-              <td class="td"></td>
-              <td class="td">30</td>
-              <td class="td">30</td>
-              <td class="td"></td>
-              <td class="td"></td>
-              <td class="td"></td>
-              <td class="td">30</td>
-              <td class="td"></td>
-              <td class="td">30</td>
-              <td class="td"></td>
-              <td class="td">30</td>
-              <td class="td"></td>
-              <td class="td"></td>
-              <td class="td">30</td>
-              <td class="td"></td>
-              <td class="td">30</td>
-              <td class="td"></td>
-              <td class="td">30</td>
-              <td class="td"></td>
-              <td class="td"></td>
-              <td class="td">30</td>
-              <td class="td"></td>
-              <td class="td">30</td>
-              <td class="td"></td>
-              <td class="td">30</td>
-              <td class="td"></td>
-              <td class="td"></td>
-            </tr>
-            <tr>
-              <td class="td">отраб.</td>
-              <td class="td">12</td>
-              <td class="td"></td>
-              <td class="td"></td>
-              <td class="td">12</td>
-              <td class="td"></td>
-              <td class="td">12</td>
-              <td class="td">11</td>
-              <td class="td"></td>
-              <td class="td"></td>
-              <td class="td"></td>
-              <td class="td">11</td>
-              <td class="td"></td>
-              <td class="td">11</td>
-              <td class="td"></td>
-              <td class="td">11</td>
-              <td class="td"></td>
-              <td class="td"></td>
-              <td class="td">11</td>
-              <td class="td"></td>
-              <td class="td">11</td>
-              <td class="td"></td>
-              <td class="td">11</td>
-              <td class="td"></td>
-              <td class="td"></td>
-              <td class="td">11</td>
-              <td class="td"></td>
-              <td class="td">11</td>
-              <td class="td"></td>
-              <td class="td">11</td>
-              <td class="td"></td>
-              <td class="td"></td>
-            </tr>
-	    {% endfor %}
-          </tbody>
-          <tfoot>
-	    <tr>
-<th class="th" colspan="42">
-	      <button type="submit" id="submitAddDr" class="btn btn-primary">Добавить сотрудника</button>
-	      <script>
-		      document.getElementById('submitAddDr').addEventListener('click', function() {
-        window.location.href = "{% url 'accounts:add_dr' %}";
-    });
-</script>
-</th>
-            </tr>
-          </tfoot>
+		<thead>
+		<tr>
+        <form id="fileUploadForm" action="{% url 'accounts:excel_import_count' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <th class="th" colspan="11">
+                <label for="excelFile" class="btn btn-primary">Внести данные из Excel</label>
+                <input type="file" id="excelFile" name="excel_file" style="display: none;" accept=".xls,.xlsx" required>
+                <button type="submit" id="Submit" class="btn btn-primary" style="display: none;">Выгрузить</button>
+            	<button id="download-button" class="btn btn-primary">Скачать график</button>
+            <script>
+                document.getElementById("download-button").addEventListener("click", function() {
+                    window.location.href = "{% url 'accounts:download_graph' %}";
+                });
+    		document.getElementById('excelFile').addEventListener('change', function() {
+        		document.getElementById('Submit').style.display = 'inline-block';
+    		});
+            </script>
+            </th>
+        </form>
+	</tr>
+</thead>
         </table>
       </div>
 </body>

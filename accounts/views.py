@@ -60,7 +60,8 @@ def acc_dr_home_view(request, user_id):
 def acc_hr_home_view(request, user_id):
     if request.user.pk == user_id and Employee.objects.get(user_id=user_id).role == 2:
         employees = Employee.objects.filter(role=1)
-        schedules = Schedule.objects.all()
+        schedules = Schedule.objects.filter(sys_user=1)
+        Schedule.entry_count()
         return render(request, 'accounts/hr.html', {'employees':employees})
     else:
         return redirect('accounts:logout')
@@ -70,7 +71,12 @@ def acc_mr_month_view(request, user_id):
     if request.user.pk == user_id and Employee.objects.get(user_id=user_id).role == 3:
         notifications = Notification.objects.all()
         employees = Employee.objects.all()
-        return render(request, 'accounts/mr_month.html', {'uid': user_id, 'notifications':notifications, 'employees':employees})
+        packs=Schedule.objects.all()
+        #conn = sqlite3.connect('db.sqlite3')
+        #cursor = conn.cursor()
+        #raw = cursor.execute('SELECT * FROM accounts_schedule;').fetchall()
+        #packs=[{'id':r[0],'sys_user':r[1],'day_in_month':r[2],'time_start':r[3],'time_end':r[4],'time_break':r[5],'time_total':r[6],'research_type':r[7]} for r in raw]
+        return render(request, 'accounts/mr_month.html', {'uid': user_id, 'notifications':notifications, 'employees':employees, 'packs':packs})
     else:
         return redirect('accounts:logout')
 
@@ -95,6 +101,7 @@ def acc_mr_not_view(request, user_id):
 def acc_mr_pred_view(request, user_id):
     if request.user.pk == user_id and Employee.objects.get(user_id=user_id).role == 3:
         notifications = Notification.objects.all()
+        #predictions = Schedule.objects.all()
         conn = sqlite3.connect('db.sqlite3')
         cursor = conn.cursor()
         raw = cursor.execute('SELECT * FROM accounts_excelmodel ORDER BY "index" DESC LIMIT 4;').fetchall()
@@ -118,7 +125,7 @@ def excel_import_count(request):
 
 @login_required
 def excel_import_employee(request):
-    if "POST" == request.method and Employee.objects.get(user=User.objects.get(username=request.user)).role == 3:
+    if Employee.objects.get(user=User.objects.get(username=request.user)).role != 1:
         uid = Employee.objects.get(user=User.objects.get(username=request.user)).user_id
         excel_file = request.FILES["excel_file_emp"]
         file_path = default_storage.save(excel_file.name, excel_file)
@@ -238,7 +245,34 @@ def download_pred(request):
         conn.close()
         with open(output_file, 'rb') as file:
             response = HttpResponse(file.read(), content_type='application/octet-stream')
-            response['Content-Disposition'] = 'attachment; filename="Im a doctor.xlsx"'
+            response['Content-Disposition'] = 'attachment; filename="Predictions.xlsx"'
             return response
+    else:
+        return redirect('accounts:login')
+
+@login_required
+def download_graph(request):
+    if Employee.objects.get(user=User.objects.get(username=request.user)).role == 3:
+        uid = Employee.objects.get(user=User.objects.get(username=request.user)).user_id
+        Schedule.objects.all().delete()
+        out = subprocess.run(['python', 'create_schedule.py'], stderr = subprocess.DEVNULL)
+        output_file = 'sched.xlsx'
+        with open(output_file, 'rb') as file:
+            response = HttpResponse(file.read(), content_type='application/octet-stream')
+            response['Content-Disposition'] = 'attachment; filename="Schedule.xlsx"'
+            return response
+    else:
+        return redirect('accounts:login')
+
+@login_required
+def import_sched(request):
+    if "POST" == request.method and Employee.objects.get(user=User.objects.get(username=request.user)).role == 3:
+        uid = Employee.objects.get(user=User.objects.get(username=request.user)).user_id
+        Schedule.objects.all().delete()
+        excel_file = request.FILES["excel_file"]
+        file_path = default_storage.save('doc.xlsx', excel_file)
+        out = subprocess.run(['python', 'create_schedule.py'], stderr = subprocess.DEVNULL)
+        os.remove(file_path)
+        return redirect('accounts:mr-cab-pred', user_id=uid)
     else:
         return redirect('accounts:login')
