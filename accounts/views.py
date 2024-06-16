@@ -185,12 +185,16 @@ def add_dr_not(request, notif_id):
 
 @login_required
 def remove_emp(request, emp_id):
-    if Employee.objects.get(user_id=request.user.pk).role == 3:
+    role = Employee.objects.get(user_id=request.user.pk).role
+    if role != 1:
         emp = Employee.objects.get(user_id=emp_id)
         usr = User.objects.get(id=emp_id)
         emp.delete()
         usr.delete()
-        return redirect('accounts:mr-cab-hr', user_id=request.user.pk)
+        if role == 2:
+            return redirect('accounts:hr-cab', user_id=request.user.pk)
+        else:
+            return redirect('accounts:mr-cab-hr', user_id=request.user.pk)
     else:
         return redirect('accounts:login')
 
@@ -224,8 +228,14 @@ def remove_notification(request, notif_id):
 @login_required
 def download_pred(request):
     if Employee.objects.get(user_id=request.user.pk).role == 3:
-        file_path = "doctor.xlsx"
-        with open(file_path, 'rb') as file:
+        conn = sqlite3.connect('db.sqlite3')
+        cursor = conn.cursor()
+        query = "SELECT * FROM accounts_excelmodel WHERE ROWID IN (SELECT ROWID FROM accounts_excelmodel ORDER BY ROWID DESC LIMIT 4);"
+        data = pd.read_sql_query(query, conn)
+        output_file = 'accounts_excelmodel.xlsx'
+        data.to_excel(output_file, index=False)
+        conn.close()
+        with open(output_file, 'rb') as file:
             response = HttpResponse(file.read(), content_type='application/octet-stream')
             response['Content-Disposition'] = 'attachment; filename="Im a doctor.xlsx"'
             return response
