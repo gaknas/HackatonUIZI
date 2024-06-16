@@ -123,15 +123,9 @@ def make_schedule_for_month(all_docs, activities, activities_UE, amount_for_week
     for week in range(0, len(amount_for_weeks)):
         for day in range(0, len(all_docs[0].get_available_week_schedule(week))):
             days_in_month+=1
-    worksheet['A1'] = 'sys_user'
-    worksheet['B1'] = 'day_of_month'
-    worksheet['C1'] = 'time_start'
-    worksheet['D1'] = 'time_end'
-    worksheet['E1'] = 'time_break'
-    worksheet['F1'] = 'time_total'
-    worksheet['G1'] = 'research_type'
+
     for doc in all_docs:
-        date = 1
+        date = 0
         for week in range(0, len(amount_for_weeks)):
 
             for day in range(0, len(all_docs[0].get_available_week_schedule(week))):
@@ -153,7 +147,6 @@ def make_schedule_for_month(all_docs, activities, activities_UE, amount_for_week
                     worksheet[strin4] = str('9:00')
                     worksheet[strin5] = str((all_docs[doc_id].get_pereriv(week)[day] % 1 + int(
                         all_docs[doc_id].get_pereriv(week)[day])) * 60)
-                    timee = all_docs[doc_id].get_amount_of_hours_per_day(week,day) + all_docs[doc_id].get_pereriv(week)[day]
                     worksheet[strin6] = str(int(timee)) + ':' + str(int((timee % 1) * 60))
                     worksheet[strin7] = str(doc.get_work_per_day()[week][day])
 
@@ -178,7 +171,7 @@ def make_schedule_for_month(all_docs, activities, activities_UE, amount_for_week
 
     conn = sqlite3.connect('db.sqlite3')
     # Запись данных из Excel файла в базу данных
-    df.to_sql('accounts_schedule', conn, if_exists='replace', index=True)
+    df.to_sql('time_schedule', conn, if_exists='replace', index=True)
     # Завершение работы с базой данных
     conn.commit()
     conn.close()
@@ -232,7 +225,7 @@ def get_stuff(year, week):
 
 
 def get_amount_for_weeks(schetchik, activities_UE):
-    conn = sqlite3.connect('db.sqlite3')  # Укажите название вашей базы данных
+    conn = sqlite3.connect('db1.sqlite3')  # Укажите название вашей базы данных
     cursor = conn.cursor()
     my_table = 'accounts_excelmodel'
     year = cursor.execute('SELECT * FROM accounts_excelmodel ORDER BY "index" DESC LIMIT 1 OFFSET 1;')
