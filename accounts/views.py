@@ -170,6 +170,9 @@ def del_dr_not(request, notif_id):
     notif = Notification.objects.get(id=notif_id)
     user = User.objects.get(id=notif.user_id)
     emp = Employee.objects.get(user = user)
+    shed = Schedule.objects.get(sys_user=emp.user_id)
+    print(shed)
+    shed.delete()
     emp.delete()
     user.delete()
     notif.delete()
@@ -245,7 +248,17 @@ def download_pred(request):
 
 @login_required
 def load_graph(request):
-    pass
+    if "POST" == request.method and Employee.objects.get(user=User.objects.get(username=request.user)).role == 3:
+        excel_file = request.FILES["graph_file"]
+        file_path = default_storage.save('graph_file.xlsx', excel_file)
+        out = subprocess.run(['python', 'create_schedule_after_correction.py'], stderr = subprocess.DEVNULL)
+        output_file = 'sched_correction.xlsx'
+        with open(output_file, 'rb') as file:
+            response = HttpResponse(file.read(), content_type='application/octet-stream')
+            response['Content-Disposition'] = 'attachment; filename="Schedule_corrected.xlsx"'
+            return response
+    else:
+        return redirect('accounts:login')
 
 @login_required
 def save_graph(request):

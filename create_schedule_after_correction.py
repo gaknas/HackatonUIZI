@@ -1,5 +1,5 @@
-import get_doctors_from_db
-from doctor_class import doctor
+import get_doctors_after_correction
+from doctor_class_correction import doctor
 import numpy as np
 import openpyxl
 import os
@@ -76,7 +76,7 @@ def zapolnenie_exel(all_docs,amount_for_weeks):
     schetchik_for_docs = 0
     days_in_month = 0
     for week in range(0, len(amount_for_weeks)):
-        for day in range(0, len(all_docs[0].get_available_week_schedule(week))):
+        for day in range(0, len(all_docs[0].get_available_days()[week])):
             days_in_month += 1
 
     for doc in all_docs:
@@ -87,7 +87,7 @@ def zapolnenie_exel(all_docs,amount_for_weeks):
 
         for week in range(0, len(amount_for_weeks)):
 
-            for day in range(0, len(all_docs[0].get_available_week_schedule(week))):
+            for day in range(0, len(all_docs[0].get_available_days()[week])):
                 strin1 = str(book[date-3 +6]) + str(4 * doc_id + 3 )
                 strin2 = str(book[date-3 +6]) + str(4 * doc_id + 4)
                 strin3 = str(book[date-3 +6]) + str(4 * doc_id + 5)
@@ -95,31 +95,31 @@ def zapolnenie_exel(all_docs,amount_for_weeks):
 
 
 
-                if doc.get_amount_of_hours_per_day(week, day) == 12:
+                if doc.get_amount_of_hours(week, day) == 12:
                     worksheet[strin1] = str('20:00')
                     worksheet[strin2] = str('9:00')
                     worksheet[strin3] = str((all_docs[doc_id].get_pereriv(week)[day] % 1 + int(all_docs[doc_id].get_pereriv(week)[day])) * 60)
 
-                    timee = all_docs[doc_id].get_amount_of_hours_per_day(week, day) + all_docs[doc_id].get_pereriv(week)[day]
+                    timee = all_docs[doc_id].get_amount_of_hours(week, day) + all_docs[doc_id].get_pereriv(week)[day]
 
                     shetchik_time+=12
                     worksheet[strin4] = 12
 
-                elif doc.get_amount_of_hours_per_day(week, day) == 0:
+                elif doc.get_amount_of_hours(week, day) == 0:
                     worksheet[strin1].value = 0
                     worksheet[strin2].value = 0
                     worksheet[strin3].value = 0
                     worksheet[strin4].value = 0
                 else:
-                    timee = all_docs[doc_id].get_amount_of_hours_per_day(week, day) + all_docs[doc_id].get_pereriv(week)[day]
+                    timee = all_docs[doc_id].get_amount_of_hours(week, day) + all_docs[doc_id].get_pereriv(week)[day]
                     worksheet[strin1] = str('8:00')
                     worksheet[strin2] = str(8 + int(timee)) + ':' + str(int((timee % 1) * 60))
                     worksheet[strin3] = str((all_docs[doc_id].get_pereriv(week)[day] % 1 + int(all_docs[doc_id].get_pereriv(week)[day])) * 60)
 
 
 
-                    worksheet[strin4] = all_docs[doc_id].get_amount_of_hours_per_day(week, day)
-                    shetchik_time += all_docs[doc_id].get_amount_of_hours_per_day(week, day)
+                    worksheet[strin4] = all_docs[doc_id].get_amount_of_hours(week, day)
+                    shetchik_time += all_docs[doc_id].get_amount_of_hours(week, day)
 
                 #print(date)
 
@@ -137,7 +137,7 @@ def zapolnenie_exel(all_docs,amount_for_weeks):
 
         doc_id += 1
 
-    workbook.save('sched.xlsx')
+    workbook.save('sched_correction.xlsx')
 
 def kostil(amount_for_week, worksheet, days_in_month, kost, book, schetchik):
     worksheet['A1'] = ''
@@ -214,12 +214,12 @@ def make_schedule_for_month(all_docs, activities, activities_UE, amount_for_week
                 'W', 'X', 'Y', 'Z', 'AA', 'AB', 'AC', 'AD', 'AE', 'AF', 'AG', 'AH', 'AI', 'AJ', 'AK', 'AL']
     days_in_month = 0
     for week in range(0, len(amount_for_weeks)):
-        for day in range(0, len(all_docs[0].get_available_week_schedule(week))):
+        for day in range(0, len(all_docs[0].get_available_days()[week])):
             days_in_month+=1
     kost = 1
     for week in range(0, len(amount_for_weeks)):
 
-        for day in range(0, len(all_docs[0].get_available_week_schedule(week))):
+        for day in range(0, len(all_docs[0].get_available_days()[week])):
             amount_for_week = dict(amount_for_weeks[week])
             #print('start:')
             #print(amount_for_week)
@@ -244,14 +244,14 @@ def make_schedule_for_month(all_docs, activities, activities_UE, amount_for_week
                         while all_docs[doc_id].get_activities_per_day(week, day) > 0:
                             if amount_for_week[min_key] <= 0:
                                 break
-                            amount_for_week[min_key] = amount_for_week[min_key] - (all_docs[doc_id].get_day_schedule(week, day) * activities_UE[min_key])
+                            amount_for_week[min_key] = amount_for_week[min_key] - (all_docs[doc_id].get_koef(week, day) * activities_UE[min_key])
 
                             #all_docs[doc_id].set_new_day_schedule(week, day, 0)                                                             #UBIRAET DEN
-                            new_amount = all_docs[doc_id].get_activities_per_day(week, day) - (all_docs[doc_id].get_day_schedule(week, day) * activities_UE[min_key])
+                            new_amount = all_docs[doc_id].get_activities_per_day(week, day) - (all_docs[doc_id].get_koef(week, day) * activities_UE[min_key])
                             #print(str(min_key) + '  '+ str(new_amount) +  '  ' + str(amount_for_week[min_key]))
                             all_docs[doc_id].set_activities_per_day(new_amount, week, day)                                                   #SKOLKO ENERGYY VRACHA OSTALOS
 
-                        all_docs[doc_id].set_new_available_days(all_docs[doc_id].get_available_day_schedule(week, day),week, day)      #RASPISANIE DLA ZAPOLNENIA TABLIZ
+                        all_docs[doc_id].set_new_available_days(all_docs[doc_id].get_available_day(week, day),week, day)      #RASPISANIE DLA ZAPOLNENIA TABLIZ
                         all_docs[doc_id].set_work_per_day(min_key, week, day)                                                           #KAKOE ISSLEDOVANIE DELAET
 
                 schetchik_for_day.pop(min_key)
@@ -264,9 +264,9 @@ def make_schedule_for_month(all_docs, activities, activities_UE, amount_for_week
             #print(schetchik_for_day)
     doc_id = 0
     schetchik_for_docs = 0
-    workbook.save('kostil.xlsx')
-    df = pd.read_excel('kostil.xlsx')
-    os.remove('kostil.xlsx')
+    workbook.save('kostil1.xlsx')
+    df = pd.read_excel('kostil1.xlsx')
+    os.remove('kostil1.xlsx')
 
     conn = sqlite3.connect('db.sqlite3')
     # Запись данных из Excel файла в базу данных
@@ -286,7 +286,7 @@ def make_schedule_for_month(all_docs, activities, activities_UE, amount_for_week
         date = 1
         for week in range(0, len(amount_for_weeks)):
 
-            for day in range(0, len(all_docs[0].get_available_week_schedule(week))):
+            for day in range(0, len(all_docs[0].get_available_days()[week])):
                 strin1 = str(book[0]) + str(days_in_month * doc_id + 1 + date)
                 strin2 = str(book[1]) + str(days_in_month * doc_id + 1 + date)
                 strin3 = str(book[2]) + str(days_in_month * doc_id + 1 + date)
@@ -300,38 +300,39 @@ def make_schedule_for_month(all_docs, activities, activities_UE, amount_for_week
 
 
 
-                if doc.get_amount_of_hours_per_day(week,day) == 12:
+                if doc.get_amount_of_hours(week,day) == 12:
                     worksheet1[strin3] = str('20:00')
                     worksheet1[strin4] = str('9:00')
                     worksheet1[strin5] = str((all_docs[doc_id].get_pereriv(week)[day] % 1 + int(
                         all_docs[doc_id].get_pereriv(week)[day])) * 60)
-                    timee = all_docs[doc_id].get_amount_of_hours_per_day(week,day) + all_docs[doc_id].get_pereriv(week)[day]
+                    timee = all_docs[doc_id].get_amount_of_hours(week,day) + all_docs[doc_id].get_pereriv(week)[day]
 
                     worksheet1[strin6] = str(int(timee)) + ':' + str(int((timee % 1) * 60))
-                    worksheet1[strin7] = str(doc.get_work_per_day()[week][day])
+                    worksheet1[strin7] = str(doc.get_work_per_day(week,day))
 
-                elif doc.get_amount_of_hours_per_day(week,day) == 0:
+                elif doc.get_amount_of_hours(week,day) == 0:
                     worksheet1[strin3] = str(0)
                     worksheet1[strin4] = str(0)
                 else:
                     worksheet1[strin3] = str('8:00')
-                    timee = all_docs[doc_id].get_amount_of_hours_per_day(week,day) + all_docs[doc_id].get_pereriv(week)[day]
+                    timee = all_docs[doc_id].get_amount_of_hours(week,day) + all_docs[doc_id].get_pereriv(week)[day]
                     worksheet1[strin4] = str(8 + int(timee)) + ':' + str(int((timee % 1) * 60))
                     worksheet1[strin5] = str((all_docs[doc_id].get_pereriv(week)[day] % 1 + int(
                         all_docs[doc_id].get_pereriv(week)[day])) * 60)
                     worksheet1[strin6] = str(int(timee)) + ':' + str(int((timee % 1) * 60))
-                    worksheet1[strin7] = str(doc.get_work_per_day()[week][day])
+                    worksheet1[strin7] = str(doc.get_work_per_day(week, day))
                 #print(date)
                 date = date + 1
 
         doc_id+=1
 
-    workbook1.save('test2.xlsx')
-    df = pd.read_excel('test2.xlsx', header=0)
+    workbook1.save('test21.xlsx')
+    df = pd.read_excel('test21.xlsx', header=0)
+    os.remove('test21.xlsx')
 
     conn = sqlite3.connect('db.sqlite3')
     # Запись данных из Excel файла в базу данных
-    df.to_sql('time_schedule', conn, if_exists='replace', index=True)
+    df.to_sql('time_schedule_new', conn, if_exists='replace', index=True)
     # Завершение работы с базой данных
     conn.commit()
     conn.close()
@@ -339,7 +340,7 @@ def make_schedule_for_month(all_docs, activities, activities_UE, amount_for_week
     zapolnenie_exel(all_docs, amount_for_weeks)
 
         #print(week)
-    os.remove("test2.xlsx")
+    #os.remove("test2.xlsx")
     return 0
 
 def make_schetchik_for_all(all_docs):
@@ -365,14 +366,20 @@ def dop_smena_ravnomerno(all_docs, amount_for_week, activities):
 
 '''ORDER BY rowid DESC LIMIT 4'''
 
+
+
+
+
 def get_month_of_week(year, week):
     d = datetime.date(year, 1, 1)
     d = d + datetime.timedelta(weeks=week - 1, days=-d.weekday())
     return d.month
 
+
 def get_stuff(year, week):
     get_month_of_week(year, week)
     month = get_month_of_week(year, week)
+
     first_day = datetime.date(year, month, 1)
     first_week_number = first_day.isocalendar()[1]
     return first_week_number
@@ -417,7 +424,7 @@ def get_amount_for_weeks(schetchik, activities_UE):
 #181   300   451
 
 def main():
-    all_docs = get_doctors_from_db.get_values()
+    all_docs = get_doctors_after_correction.create_doctors()
     schetchik = {'Денситометрия': 0, 'КТ': 0, 'КТ1': 0, 'КТ2': 0, 'ММГ': 0, 'МРТ': 0, 'МРТ1': 0, 'МРТ2': 0, 'РГ': 0, 'ФЛГ': 0}
     activities_max_150 = {'Денситометрия': 210, 'КТ': 39, 'КТ1': 24, 'КТ2': 17, 'ММГ': 123, 'МРТ': 30, 'МРТ1': 23,
                           'МРТ2': 15, 'РГ': 123, 'ФЛГ': 451}  # Словарь со всеми исследованиями и их значениями
@@ -439,4 +446,3 @@ def main():
 
 
 main()
-
