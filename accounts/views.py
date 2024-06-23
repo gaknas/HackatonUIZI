@@ -186,13 +186,13 @@ def add_dr_not(request, notif_id):
     user.save()
     notif.delete()
     return redirect('accounts:mr-cab-not', user_id = Employee.objects.get(user=User.objects.get(username=request.user)).user_id)
-
 @login_required
 def remove_emp(request, emp_id):
     role = Employee.objects.get(user_id=request.user.pk).role
     if role != 1:
-        emp = Employee.objects.get(user_id=emp_id)
         usr = User.objects.get(id=emp_id)
+        emp = Employee.objects.get(user_id=emp_id)
+        emp.sys_user.all().delete()
         emp.delete()
         usr.delete()
         if role == 2:
@@ -250,8 +250,20 @@ def download_pred(request):
 def load_graph(request):
     if "POST" == request.method and Employee.objects.get(user=User.objects.get(username=request.user)).role == 3:
         excel_file = request.FILES["graph_file"]
+        try:
+            os.remove('graph_file.xlsx')
+        except OSError:
+            pass
+        try:
+            os.remove('sched_correction.xlsx')
+        except OSError:
+            pass
+
+        wb = openpyxl.Workbook()
+        wb.save('sched_correction.xlsx')
         file_path = default_storage.save('graph_file.xlsx', excel_file)
         out = subprocess.run(['python', 'create_schedule_after_correction.py'], stderr = subprocess.DEVNULL)
+
         output_file = 'sched_correction.xlsx'
         with open(output_file, 'rb') as file:
             response = HttpResponse(file.read(), content_type='application/octet-stream')

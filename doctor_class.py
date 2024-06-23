@@ -144,4 +144,5 @@ class doctor:
 
 
     def vivod(self):
-        print(str(self.id) + "  " + str(self.abilities) + "  " + str(self.working_rate) + "  " + str(self.graphic_of_work) + "  " + str(self.available_days) + "  " + str(self.amount_of_hours))
+        pass
+        #print(str(self.id) + "  " + str(self.abilities) + "  " + str(self.working_rate) + "  " + str(self.graphic_of_work) + "  " + str(self.available_days) + "  " + str(self.amount_of_hours))

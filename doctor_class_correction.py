@@ -102,7 +102,8 @@ class doctor:
         self.is_used = flag
 
     def vivod(self):
-        print(str(self.id) + "  " + str(self.abilities) + "  " +  str(self.working_rate) + "  " + str(self.graphic_of_work) + "  " + str(self.available_days) + "  " + str(self.raspisanie) + "  " + str(self.amount_of_hours) + "  " + str(self.starting_time) + "  " + str(self.is_used))
+        pass
+        #print(str(self.id) + "  " + str(self.abilities) + "  " +  str(self.working_rate) + "  " + str(self.graphic_of_work) + "  " + str(self.available_days) + "  " + str(self.raspisanie) + "  " + str(self.amount_of_hours) + "  " + str(self.starting_time) + "  " + str(self.is_used))
 
     def get_pereriv(self,week):
         return self.time_out[week]

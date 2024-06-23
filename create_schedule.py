@@ -275,7 +275,7 @@ def make_schedule_for_month(all_docs, activities, activities_UE, amount_for_week
     conn.commit()
     conn.close()
 
-    worksheet1['A1'] = 'sys_user'
+    worksheet1['A1'] = 'sys_user_id'
     worksheet1['B1'] = 'day_of_month'
     worksheet1['C1'] = 'time_start'
     worksheet1['D1'] = 'time_end'
@@ -331,7 +331,8 @@ def make_schedule_for_month(all_docs, activities, activities_UE, amount_for_week
 
     conn = sqlite3.connect('db.sqlite3')
     # Запись данных из Excel файла в базу данных
-    df.to_sql('time_schedule', conn, if_exists='replace', index=True)
+    print("WOOW")
+    df.to_sql('accounts_schedule', conn, if_exists='replace', index=True)
     # Завершение работы с базой данных
     conn.commit()
     conn.close()
@@ -435,7 +436,7 @@ def main():
 
     amount_for_week = get_amount_for_weeks(schetchik, activities_UE)       #2022 15 данные для тестов
     #print(amount_for_week)
-    #print(make_schedule_for_month(all_docs, activities,activities_UE, amount_for_week, schetchik))
+    print(make_schedule_for_month(all_docs, activities,activities_UE, amount_for_week, schetchik))
 
 
 main()

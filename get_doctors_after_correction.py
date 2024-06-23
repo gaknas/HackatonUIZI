@@ -80,7 +80,7 @@ def get_mas_of_doc():
         #print(all_new[i-1])
     for_return = [x for x in all_mas if x != []]
     for_new = [x for x in all_new if x != [[],[],[]]]
-    print(for_new)
+    #print(for_new)
     return for_return, for_new
 
 def create_doctors():
@@ -109,9 +109,7 @@ def import_weeks_and_sched():
     cursor.execute(sqlite_select_query)
     records = cursor.fetchmany(row_count)
     j = 0
-    print(len(records))
     for i in range(0, len(records)):
-        print(i)
         if records[i][1] ==1:
     
             b = [records[i][5][1], records[i][5][4]]
