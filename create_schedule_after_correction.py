@@ -275,7 +275,7 @@ def make_schedule_for_month(all_docs, activities, activities_UE, amount_for_week
     conn.commit()
     conn.close()
 
-    worksheet1['A1'] = 'sys_user'
+    worksheet1['A1'] = 'sys_user_id'
     worksheet1['B1'] = 'day_of_month'
     worksheet1['C1'] = 'time_start'
     worksheet1['D1'] = 'time_end'

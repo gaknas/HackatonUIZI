@@ -151,6 +151,7 @@ def add_dr_submit(request):
         if Employee.objects.get(user_id=uid).role == 2:
             if role == '1':
                 user = Employee.objects.create(user = User.objects.create_user(username=username, first_name=fio, last_name=1, password=password, is_active=0), role=role, bid=bid,primary_skill=primary_skill, secondary_skills=secondary_skills)
+                subprocess.run(['python', 'INIT_SCHED.py'], stderr = subprocess.DEVNULL)
                 user.save()
             if role == '2':
                 user = Employee.objects.create(user = User.objects.create_user(username=username, first_name=fio, password=password, is_active=0), role=role, bid=bid,primary_skill=primary_skill, secondary_skills=secondary_skills)
@@ -160,23 +161,30 @@ def add_dr_submit(request):
                 return render(request, 'accounts/add_dr.html',{'error':'У Вас нет прав на создание этого пользователя'})
             return redirect('accounts:hr-cab', user_id=uid)
         else:
-            user = Employee.objects.create(user = User.objects.create_user(username=username, first_name=fio, password=password, is_active=1), role=role, bid=bid,primary_skill=primary_skill, secondary_skills=secondary_skills)
-            user.save()
+            if role == '1':
+                user = Employee.objects.create(user = User.objects.create_user(username=username, first_name=fio, last_name=1, password=password, is_active=1), role=role, bid=bid,primary_skill=primary_skill, secondary_skills=secondary_skills)
+                user.save()
+                subprocess.run(['python', 'INIT_SCHED.py'], stderr = subprocess.DEVNULL)
+            else:
+                user = Employee.objects.create(user = User.objects.create_user(username=username, first_name=fio, password=password, is_active=1), role=role, bid=bid,primary_skill=primary_skill, secondary_skills=secondary_skills)
+                user.save()
             return redirect('accounts:mr-cab-hr', user_id=uid) 
     return redirect('accounts:login')
 
 @login_required
 def del_dr_not(request, notif_id):
-    notif = Notification.objects.get(id=notif_id)
-    user = User.objects.get(id=notif.user_id)
-    emp = Employee.objects.get(user = user)
-    shed = Schedule.objects.get(sys_user=emp.user_id)
-    print(shed)
-    shed.delete()
-    emp.delete()
-    user.delete()
-    notif.delete()
-    return redirect('accounts:mr-cab-not', user_id = Employee.objects.get(user=User.objects.get(username=request.user)).user_id)
+    role = Employee.objects.get(user_id=request.user.pk).role
+    if role == 3:
+        notif = Notification.objects.get(id=notif_id)
+        usr = User.objects.get(id=notif.user_id)
+        emp = Employee.objects.get(user_id=notif.user_id)
+        emp.sys_user.all().delete()
+        emp.delete()
+        usr.delete()
+        notif.delete()
+        return redirect('accounts:mr-cab-not', user_id=request.user.pk)
+    else:
+        return redirect('accounts:login')
 
 @login_required
 def add_dr_not(request, notif_id):
@@ -258,7 +266,6 @@ def load_graph(request):
             os.remove('sched_correction.xlsx')
         except OSError:
             pass
-
         wb = openpyxl.Workbook()
         wb.save('sched_correction.xlsx')
         file_path = default_storage.save('graph_file.xlsx', excel_file)
