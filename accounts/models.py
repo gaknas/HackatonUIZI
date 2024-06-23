@@ -1,4 +1,3 @@
-import sqlite3
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -67,9 +66,8 @@ class Employee(models.Model):
         verbose_name_plural = 'Сотрудники'
 
 class Schedule(models.Model):
-    id = models.BigAutoField(primary_key=True)
     sys_user = models.ForeignKey(Employee, on_delete=models.CASCADE, null=True)
-    day_of_month = models.DateField(null=True)
+    day_of_month = models.DateField()
     time_start = models.TimeField()
     time_end = models.TimeField()
     time_break = models.TimeField()
@@ -78,16 +76,6 @@ class Schedule(models.Model):
 
     def __str__(self):
         return str(self.day_of_month) + " " + self.research_type
-
-    #def ret_col(self, number):
-    #    pass
-    @classmethod
-    def entry_count(cls):
-        conn = sqlite3.connect('db.sqlite3')
-        cursor = conn.cursor()
-        raw = cursor.execute('SELECT COUNT(*) FROM accounts_schedule WHERE sys_user="10";').fetchall()
-        print(raw)
-        #predictions=[{'id':r[0],'year':r[1],'week_num':r[2],'dens':r[3],'kt':r[4],'kt1':r[5],'kt2':r[6],'mmg':r[7],'mrt':r[8],'mrt1':r[9],'mrt2':r[10],'rg':r[11],'flu':r[12]} for r in reversed(raw)]
 
     class Meta:
         verbose_name = 'Расписание'

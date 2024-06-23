@@ -7,6 +7,8 @@ import sqlite3
 import pandas as pd
 import datetime
 
+
+
 def check_for_overload(activities, schetchik, amount_for_month):
     mas = {}
     for key in schetchik.keys():
@@ -329,7 +331,7 @@ def make_schedule_for_month(all_docs, activities, activities_UE, amount_for_week
 
     conn = sqlite3.connect('db.sqlite3')
     # Запись данных из Excel файла в базу данных
-    df.to_sql('accounts_schedule', conn, if_exists='replace', index=True)
+    df.to_sql('time_schedule', conn, if_exists='replace', index=True)
     # Завершение работы с базой данных
     conn.commit()
     conn.close()
@@ -337,7 +339,7 @@ def make_schedule_for_month(all_docs, activities, activities_UE, amount_for_week
     zapolnenie_exel(all_docs, amount_for_weeks)
 
         #print(week)
-    #os.remove("test2.xlsx")
+    os.remove("test2.xlsx")
     return 0
 
 def make_schetchik_for_all(all_docs):
@@ -363,20 +365,14 @@ def dop_smena_ravnomerno(all_docs, amount_for_week, activities):
 
 '''ORDER BY rowid DESC LIMIT 4'''
 
-
-
-
-
 def get_month_of_week(year, week):
     d = datetime.date(year, 1, 1)
     d = d + datetime.timedelta(weeks=week - 1, days=-d.weekday())
     return d.month
 
-
 def get_stuff(year, week):
     get_month_of_week(year, week)
     month = get_month_of_week(year, week)
-
     first_day = datetime.date(year, month, 1)
     first_week_number = first_day.isocalendar()[1]
     return first_week_number
