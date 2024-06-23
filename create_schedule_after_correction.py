@@ -442,7 +442,7 @@ def main():
 
     amount_for_week = get_amount_for_weeks(schetchik, activities_UE)       #2022 15 данные для тестов
     #print(amount_for_week)
-    #print(make_schedule_for_month(all_docs, activities,activities_UE, amount_for_week, schetchik))
+    print(make_schedule_for_month(all_docs, activities,activities_UE, amount_for_week, schetchik))
 
 
 main()
