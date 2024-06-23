@@ -2,79 +2,71 @@
 <html>
 
 <head>
+      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
       {% load static %}
       <title>Расписание</title>
-      <link rel="stylesheet" href="{% static 'accounts/style_dr.css' %}">
+      <link rel="stylesheet" href="{% static 'accounts/ceohr.css' %}">
       <link rel="icon" href="{% static 'images/favicon.ico' %}">
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
 
 <body>
-      <nav class="navbar">
-	      <img style="margin: 10px" src="{% static 'accounts/images/logo_center.png' %}" width="120" height="120" alt="logo">
-            <div class="container" style="text-align: center;">
-              <p style="margin-right: 10px;">Вы авторизированы как врач</p>
-	      <a href="{% url 'accounts:logout' %}">Выйти</a>
-            </div>
-      </nav>
-      <div class="timetable">
-            <div class="header">
-                  <h1>Расписание на неделю</h1>
-		  <a href="{% url 'accounts:add_appeal' %}"><img class="report" src="{% static 'accounts/images/em.png' %}" width="50" height="50" title="Сообщить о необходимости в изменении расписания"/></a>
-            </div>
 
-        <div class="timetable-grid">
-          <div class="days">
-            <div class="day">День недели</div>
-            <div class="day">Понедельник</div>
-            <div class="day">Вторник</div>
-            <div class="day">Среда</div>
-            <div class="day">Четверг</div>
-            <div class="day">Пятница</div>
-            <div class="day">Суббота</div>
-            <div class="day">Воскресенье</div>
-          </div>
-          <div class="time-slots">
-            <div class="time-slot">Начало работы</div>
-            <div class="day">8:00</div>
-            <div class="day">-</div>
-            <div class="day">-</div>
-            <div class="day">8:00</div>
-            <div class="day">-</div>
-            <div class="day">8:00</div>
-            <div class="day">8:00</div>
-          </div>
-          <div class="time-slots">
-            <div class="time-slot">Конец работы</div>
-            <div class="day">20:30</div>
-            <div class="day">-</div>
-            <div class="day">-</div>
-            <div class="day">20:30</div>
-            <div class="day">-</div>
-            <div class="day">20:30</div>
-            <div class="day">19:30</div>
-          </div>
-          <div class="time-slots">
-            <div class="time-slot">Перерыв</div>
-            <div class="day">30 минут</div>
-            <div class="day">-</div>
-            <div class="day">-</div>
-            <div class="day">30 минут</div>
-            <div class="day">-</div>
-            <div class="day">30 минут</div>
-            <div class="day">30 минут</div>
-          </div>
-          <div class="time-slots">
-            <div class="time-slot">Тип исследования</div>
-            <div class="day">РГ</div>
-            <div class="day">-</div>
-            <div class="day">-</div>
-            <div class="day">РГ</div>
-            <div class="day">-</div>
-            <div class="day">РГ</div>
-            <div class="day">РГ</div>
-          </div>
-        </div>
+<div style="display: flex; align-items: flex-start;">
+<nav class="navbar flex-column bg-body-tertiary" style="width: 200px; padding-left: 10px;">
+<a class="navbar-brand" href="#">
+<img src="{% static 'accounts/images/logo_center.png' %}" width="120px" height="120px">
+</a>
+<ul class="navbar-nav">
+<li class="nav-item">
+<p>Вы авторизированы как Менеджер Кадров</p>
+<a href="{% url 'accounts:logout' %}" class="btn btn-light">Выйти</a>
+</li>
+</ul>
+</nav>
+
+<div style="flex: 1; margin-top: 25px;">
+      <div class="table-container">
+        <table>
+		<thead>
+
+    		<th class="th" colspan="11">
+		<button type="submit" id="submitAddDr" class="btn btn-primary">Добавить сотрудника</button>
+   		</th>
+
+	<script>		
+		document.getElementById('submitAddDr').addEventListener('click', function() {
+        	window.location.href = "{% url 'accounts:add_dr' %}";
+    	});
+	</script>
+		</thead>
+          <thead>
+            <tr>
+              <th class="th">Сотрудник</th>
+              <th class="th">Модальность</th>
+              <th class="th">Доп модальности</th>
+              <th class="th">Ставка</th>
+            </tr>
+          </thead>
+	  <tbody>
+        {% for employee in employees %}
+        <tr>
+            <td class="td">{{ employee.user.first_name }}</td>
+            <td class="td">{{ employee.primary_skill }}</td>
+            <td class="td">{{ employee.secondary_skills }}</td>
+            <td class="td"><span class="badge text-bg-success rounded-pill">{{ employee.bid }}</span></td>
+	    <td class="td"><a href="{% url 'accounts:remove_emp' employee.user_id %}"><img src="{% static 'accounts/images/delete.png' %}" /></a></a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+          <tfoot>
+            <tr>
+            </tr>
+          </tfoot>
+        </table>
       </div>
+</div>
+</div>
 </body>
 
 </html>

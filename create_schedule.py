@@ -332,7 +332,7 @@ def make_schedule_for_month(all_docs, activities, activities_UE, amount_for_week
     conn = sqlite3.connect('db.sqlite3')
     # Запись данных из Excel файла в базу данных
     print("WOOW")
-    df.to_sql('accounts_schedule', conn, if_exists='replace', index=True)
+    df.to_sql('accounts_schedule', conn, if_exists='replace', index=True, index_label='id')
     # Завершение работы с базой данных
     conn.commit()
     conn.close()

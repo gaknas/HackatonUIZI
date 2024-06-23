@@ -50,7 +50,13 @@ def acc_logout(request):
 def acc_dr_home_view(request, user_id):
     if request.user.is_authenticated:
         if request.user.pk == user_id and Employee.objects.get(user_id=user_id).role == 1:
-            return render(request, 'accounts/dr.html')
+            print("hello")
+
+            conn = sqlite3.connect('db.sqlite3')
+            cursor = conn.cursor()
+            raw = cursor.execute(f'SELECT * FROM accounts_schedule WHERE id={user_id};').fetchall()
+            scheds=[{'id':r[0],'day_of_month':r[1],'time_start':r[2],'time_end':r[3],'time_break':r[4],'time_total':r[5],'research_type':r[6]} for r in raw]
+            return render(request, 'accounts/dr.html', {'scheds':scheds})
         else:
             return redirect('/')
     else:
@@ -60,7 +66,6 @@ def acc_dr_home_view(request, user_id):
 def acc_hr_home_view(request, user_id):
     if request.user.pk == user_id and Employee.objects.get(user_id=user_id).role == 2:
         employees = Employee.objects.filter(role=1)
-        schedules = Schedule.objects.all()
         return render(request, 'accounts/hr.html', {'employees':employees})
     else:
         return redirect('accounts:logout')
@@ -151,15 +156,16 @@ def add_dr_submit(request):
         if Employee.objects.get(user_id=uid).role == 2:
             if role == '1':
                 user = Employee.objects.create(user = User.objects.create_user(username=username, first_name=fio, last_name=1, password=password, is_active=0), role=role, bid=bid,primary_skill=primary_skill, secondary_skills=secondary_skills)
-                subprocess.run(['python', 'INIT_SCHED.py'], stderr = subprocess.DEVNULL)
                 user.save()
+                subprocess.run(['python', 'INIT_SCHED.py'], stderr = subprocess.DEVNULL)
             if role == '2':
                 user = Employee.objects.create(user = User.objects.create_user(username=username, first_name=fio, password=password, is_active=0), role=role, bid=bid,primary_skill=primary_skill, secondary_skills=secondary_skills)
                 Notification.objects.create(user_id=user.user_id, type_not=False, text_not='Утвердите профиль', name_emp=user.user.first_name)
                 user.save()
             if role == '3':
                 return render(request, 'accounts/add_dr.html',{'error':'У Вас нет прав на создание этого пользователя'})
-            return redirect('accounts:hr-cab', user_id=uid)
+            #return redirect('accounts:hr-cab', user_id=uid)
+            return render(request, 'accounts/add_dr.html',{'error':'Данные успешно записаны'})
         else:
             if role == '1':
                 user = Employee.objects.create(user = User.objects.create_user(username=username, first_name=fio, last_name=1, password=password, is_active=1), role=role, bid=bid,primary_skill=primary_skill, secondary_skills=secondary_skills)
@@ -168,7 +174,8 @@ def add_dr_submit(request):
             else:
                 user = Employee.objects.create(user = User.objects.create_user(username=username, first_name=fio, password=password, is_active=1), role=role, bid=bid,primary_skill=primary_skill, secondary_skills=secondary_skills)
                 user.save()
-            return redirect('accounts:mr-cab-hr', user_id=uid) 
+            return render(request, 'accounts/add_dr.html',{'error':'Данные успешно записаны'})
+            #return redirect('accounts:mr-cab-hr', user_id=uid) 
     return redirect('accounts:login')
 
 @login_required
@@ -194,6 +201,7 @@ def add_dr_not(request, notif_id):
     user.save()
     notif.delete()
     return redirect('accounts:mr-cab-not', user_id = Employee.objects.get(user=User.objects.get(username=request.user)).user_id)
+
 @login_required
 def remove_emp(request, emp_id):
     role = Employee.objects.get(user_id=request.user.pk).role

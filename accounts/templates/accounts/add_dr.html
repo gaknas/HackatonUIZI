@@ -37,6 +37,15 @@
             <div class="wrap">
                 <button type="submit">Подтвердить</button>
             </div>
+	    {% if error %}
+	    <div class="wrap">
+	        <a href="#" class="button-back" onclick="history.go(-2)">Назад</a>
+	    </div>
+	    {% else %}
+	    <div class="wrap">
+                <a href="#" class="button-back" onclick="history.go(-1)">Назад</a>
+            </div>
+	    {% endif %}
         </form>
     </div>
 </body>
