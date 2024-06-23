@@ -10,50 +10,38 @@
 </head>
 
 <body>
-      <!--<nav class="navbar">
-            <img style="margin: 10px" src="./images/logo_center.png" width="120" height="120" alt="logo">
-            
-            <div class="auth-data" style="text-align: center;">
-              <p style="margin-right: 10px;">Вы авторизированы как HR</p>
-              <a href="">Logout</a>
-            </div>
-      </nav> -->   
-      <nav class="navbar navbar-expand-lg bg-body-tertiary">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="#">
-		  <img src="{% static 'accounts/images/logo_center.png' %}" width="120px" height="120px">
-          </a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-              <li class="nav-item">
-		      <a class="nav-link active" aria-current="page" href="{% url 'accounts:mr-cab-month' user_id=uid %}">Управление графиком</a>
-              </li>
-              <li class="nav-item">
-		      <a class="nav-link" href="{% url 'accounts:mr-cab-hr' user_id=uid %}">Управление кадрами</a>
-              </li>
-	      {% if notifications %}
-	      <li class="nav-item">
-			<a class="nav-link" href="{% url 'accounts:mr-cab-not' user_id=uid %}" style="color: red; font-weight: bold;">Уведомления</a>
-	      </li>
-	      {% else %}
-              <li class="nav-item">
-		      <a class="nav-link" href="{% url 'accounts:mr-cab-not' user_id=uid %}">Уведомления</a>
-              </li>
-	      {% endif %}
-              <li class="nav-item">
-		      <a class="nav-link"  href="{% url 'accounts:mr-cab-pred' user_id=uid %}">Прогнозирование количества исследований</a>
-              </li>
-            </ul>
-            <div class="ms-auto" style="text-align: center;">
-              <p style="margin-right: 10px;">Вы авторизированы как Руководитель</p>
-	      <a href="{% url 'accounts:logout' %}">Выйти</a>
-            </div>
-          </div>
-        </div>
-      </nav>
+<div style="display: flex; align-items: flex-start;">
+<nav class="navbar flex-column bg-body-tertiary" style="width: 200px; padding-left: 10px;">
+<a class="navbar-brand" href="#">
+<img src="{% static 'accounts/images/logo_center.png' %}" width="120px" height="120px">
+</a>
+<ul class="navbar-nav">
+<li class="nav-item">
+<a class="nav-link active" aria-current="page" href="{% url 'accounts:mr-cab-month' user_id=uid %}">Управление графиком</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="{% url 'accounts:mr-cab-hr' user_id=uid %}">Управление кадрами</a>
+</li>
+{% if notifications %}
+<li class="nav-item">
+<a class="nav-link" href="{% url 'accounts:mr-cab-not' user_id=uid %}" style="color: red; font-weight: bold;">Уведомления</a>
+</li>
+{% else %}
+<li class="nav-item">
+<a class="nav-link" href="{% url 'accounts:mr-cab-not' user_id=uid %}">Уведомления</a>
+</li>
+{% endif %}
+<li class="nav-item">
+<a class="nav-link" href="{% url 'accounts:mr-cab-pred' user_id=uid %}">Прогнозирование количества исследований</a>
+</li>
+<li class="nav-item" style="margin-top: 25px;">
+<p>Вы авторизированы как Руководитель</p>
+<a href="{% url 'accounts:logout' %}" class="btn btn-light">Выйти</a>
+</li>
+</ul>
+</nav>
+
+<div style="flex: 1; margin-top: 25px;">
       <h3 style="text-align: center;">Прогноз</h3>
       <div class="table-container">
         <table>
@@ -116,6 +104,8 @@
           </tfoot>
         </table>
       </div>
+</div>
+</div>
 </body>
 
 </html>

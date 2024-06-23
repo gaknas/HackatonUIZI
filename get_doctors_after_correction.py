@@ -109,9 +109,11 @@ def import_weeks_and_sched():
     cursor.execute(sqlite_select_query)
     records = cursor.fetchmany(row_count)
     j = 0
+    print(len(records))
     for i in range(0, len(records)):
+        print(i)
         if records[i][1] ==1:
-
+    
             b = [records[i][5][1], records[i][5][4]]
             A = records[i][6][2:-2]
 

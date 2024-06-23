@@ -11,10 +11,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
+
 <body>
 <div style="display: flex;">
 
-<nav class="navbar flex-column bg-body-tertiary" style="width: 200px; padding-left: 10px;">
+<nav class="navbar flex-column bg-body-tertiary" style="width: 200px; padding-left: 25px;"> <!-- Added padding-left -->
 <a class="navbar-brand" href="#">
 <img src="{% static 'accounts/images/logo_center.png' %}" width="120px" height="120px">
 </a>
@@ -37,14 +38,14 @@
 <li class="nav-item">
 <a class="nav-link" href="{% url 'accounts:mr-cab-pred' user_id=uid %}">Прогнозирование количества исследований</a>
 </li>
-<li class="nav-item" style="margin-top: 25px;">
-<p>Вы авторизированы как Руководитель</p>
-<a href="{% url 'accounts:logout' %}" class="btn btn-light">Выйти</a>
-</li>
 </ul>
+<div style="text-align: center;">
+<p>Вы авторизированы как Руководитель</p>
+<a href="{% url 'accounts:logout' %}">Выйти</a>
+</div>
 </nav>
 
-<div style="flex: 1; margin-top: 25px;">
+<div style="flex: 1; margin-top: 30px;">
 <div class="table-container">
 <table>
 <tfoot>
@@ -77,5 +78,7 @@ document.getElementById('Submit').style.display = 'inline-block';
 </div>
 </div>
 </div>
+
 </body>
+
 </html>
