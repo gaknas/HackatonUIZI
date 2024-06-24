@@ -10,13 +10,20 @@
 </head>
 
 <body>
-      <nav class="navbar">
-	      <img style="margin: 10px" src="{% static 'accounts/images/logo_center.png' %}" width="120" height="120" alt="logo">
-            <div class="auth-data" style="text-align: center;">
-              <p style="margin-right: 10px;">Вы авторизированы как Врач</p>
-	      <a href="{% url 'accounts:logout' %}">Выйти</a>
-            </div>
-      </nav>    
+
+	<div style="display: flex; align-items: flex-start;">
+<nav class="navbar flex-column bg-body-tertiary" style="width: 200px; padding-left: 20px;">
+<a class="navbar-brand" href="">
+<img src="{% static 'accounts/images/logo_center.png' %}" width="120px" height="120px">
+</a>
+<ul class="navbar-nav">
+<li class="nav-item">
+<p>Вы авторизированы как Врач</p>
+<a href="{% url 'accounts:logout' %}" class="btn btn-light">Выйти</a>
+</li>
+</ul>
+</nav>
+<div style="flex: 1; margin-top: 60px;">
       <div class="table-container">
         <table>
           <thead>
@@ -57,6 +64,8 @@
             </tr>
           </tbody>
         </table>
+      </div>
+      </div>
       </div>
 </body>
 

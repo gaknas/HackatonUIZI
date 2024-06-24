@@ -225,14 +225,15 @@ def add_appeal(request):
 
 @login_required
 def add_appeal_submit(request):
-    if Employee.objects.get(user_id=request.user.pk).role == 1:
+    uid = request.user.pk
+    if Employee.objects.get(user_id=uid).role == 1:
         text = request.POST.get('salutation')
-        name = User.objects.get(id=request.user.pk).first_name
+        name = User.objects.get(id=uid).first_name
         print(name)
         if text:
-            notif = Notification.objects.create(user_id=request.user.pk, type_not=1, text_not=text, name_emp=name)
+            notif = Notification.objects.create(user_id=uid, type_not=1, text_not=text, name_emp=name)
             notif.save()
-            return redirect('accounts:dr-cab', user_id=request.user.pk)
+            return redirect('accounts:dr-cab', user_id=uid)
         else:
             return render(request, 'accounts/add_appeal.html', {'error':'Введите сообщение'})
     return redirect('accounts:login')
