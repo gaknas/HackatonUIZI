@@ -13,6 +13,7 @@ sudo apt update -y
 sudo apt install python -y
 sudo apt install python-pip -y
 sudo apt install python-venv -y
+
 ```
   
 - Склонировать репозиторий:
