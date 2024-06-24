@@ -30,7 +30,7 @@ sudo apt install python3-venv -y
   ```
 - Запустить установочный скрипт:
   ```bash
-  ./script.sh
+  source script.sh
   ```
 - Запустить локальный сервер:
   ```bash
