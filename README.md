@@ -46,6 +46,9 @@ sudo apt install python3-venv -y
 - Выполнить набор команд в терминале:
 ```bash
 make shell
+```
+- А затем:
+```bash
 from django.contrib.auth.models import User
 from accounts.models import Employee
 emp = Employee.objects.create(user_id=User.objects.create_user('mr1', password='mr1').pk, role=3)
