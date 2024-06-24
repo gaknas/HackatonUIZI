@@ -25,5 +25,3 @@ python PREDICT.py pred.xlsx #Выполняем предсказание на о
 python LOAD_EMP.py doc.xlsx login.txt #Создаём аккаунты для всех работников из doc.xlsx и временно записываем их данные в login.txt
 
 python create_schedule.py #Создаём расписание для врачей
-
-python manage.py runserver 0.0.0.0:8000 #Запускаем сервер по адресу 0.0.0.0:8000
