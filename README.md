@@ -13,7 +13,6 @@ sudo apt update -y
 sudo apt install python3 -y
 sudo apt-get install python3-pip python3-dev -y
 sudo apt install python3-venv -y
-sudo apt install linux-source -y
 ```
   
 - Склонировать репозиторий:
