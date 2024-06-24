@@ -1,10 +1,10 @@
 #!/bin/bash
 
-python3 -m venv env #Создаём виртуальное окружение
+python -m venv env #Создаём виртуальное окружение
 
 source env/bin/activate #Запускаем его
 
-pip3 install -r requirements.txt #Устанавливаем необходимые зависимости
+pip install -r requirements.txt #Устанавливаем необходимые зависимости
 
 rm -r accounts/migrations/00* #Удаляем ненужные миграции
 
@@ -20,10 +20,10 @@ password="admin"
 
 echo "from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.create_superuser('$username', '$email', '$password')" | python manage.py shell #Создаём суперпользователя с данными, указанными тут ранее
 
-python3 PREDICT.py pred.xlsx #Выполняем предсказание на основе файла pred.xlsx
+python PREDICT.py pred.xlsx #Выполняем предсказание на основе файла pred.xlsx
 
-python3 LOAD_EMP.py doc.xlsx login.txt #Создаём аккаунты для всех работников из doc.xlsx и временно записываем их данные в login.txt
+python LOAD_EMP.py doc.xlsx login.txt #Создаём аккаунты для всех работников из doc.xlsx и временно записываем их данные в login.txt
 
-python3 create_schedule.py #Создаём расписание для врачей
+python create_schedule.py #Создаём расписание для врачей
 
-python3 manage.py runserver 0.0.0.0:8000 #Запускаем сервер по адресу 0.0.0.0:8000
+python manage.py runserver 0.0.0.0:8000 #Запускаем сервер по адресу 0.0.0.0:8000
