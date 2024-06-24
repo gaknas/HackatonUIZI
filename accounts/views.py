@@ -53,7 +53,6 @@ def acc_dr_home_view(request, user_id):
             conn = sqlite3.connect('db.sqlite3')
             cursor = conn.cursor()
             raw = cursor.execute(f'SELECT * FROM accounts_schedule WHERE sys_user_id={user_id};').fetchall()
-            print(raw)
             scheds=[{'id':r[0],'sys_user_id':r[1],'day_of_month':r[2],'time_start':r[3],'time_end':r[4],'time_break':r[5],'time_total':r[6],'research_type':r[7]} for r in raw]
             return render(request, 'accounts/dr.html', {'scheds':scheds})
         else:

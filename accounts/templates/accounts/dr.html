@@ -14,16 +14,15 @@
 	      <img style="margin: 10px" src="{% static 'accounts/images/logo_center.png' %}" width="120" height="120" alt="logo">
             <div class="auth-data" style="text-align: center;">
               <p style="margin-right: 10px;">Вы авторизированы как Врач</p>
-              <a href="">Выйти</a>
+	      <a href="{% url 'accounts:logout' %}">Выйти</a>
             </div>
       </nav>    
       <div class="table-container">
         <table>
           <thead>
             <tr>
-              <th class="th" rowspan="2"></th>
+		    <th class="th" rowspan="2"><a href="{% url 'accounts:add_appeal' %}"><img src="{% static 'accounts/images/em.png' %}" style="max-width:60px; max-height:60px;"/></a></th>
               <th class="th" colspan="31">Числа месяца</th>
-              <th class="th" rowspan="2"></th>
             </tr>
             <tr>
 	      {% for sched in scheds %}
@@ -37,9 +36,6 @@
 	      {% for sched in scheds %}
 	      <td class="td">{% if sched.time_start %}{{ sched.time_start }}{% else %}0{% endif %}</td>
 	      {% endfor %}
-	      <!--
-	      <td class="td" rowspan="4"><a href=""><img src="{% static 'accounts/images/em.png' %}" style="max-width:30px; max-height:30px;"/></a></td>
-	      -->
             </tr>
             <tr>
               <td class="td">до</td>
