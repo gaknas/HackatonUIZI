@@ -1,8 +1,3 @@
 # HackatonUIZI
-## Шпаргалка на время разработки решения
-1. Task
-2. Issue + Assign
-3. Branch
-4. Commit
-5. Pull request
-6. Merge
+## Предиктивный алгоритм
+Описание алгоритма находится в файле АримаV2.ipynb. Этот файл можно открыть в GitHub
